@@ -531,7 +531,7 @@
             ]
         };
 
-        // --- Global Variables ---
+        // --- Global Variables (will be used by multiple functions) ---
         let timer = quizData.duration * 60;
         let countdownInterval;
         let studentName = "";
@@ -763,11 +763,17 @@
             // --- Event Listeners ---
 
             // Handle click on the main "Start Free Mock Test" button
-            startTestButton.addEventListener('click', () => {
-                console.log("Start Test button clicked.");
-                mainDashboardSection.classList.add("hidden");
-                quizFlowContainer.classList.remove("hidden");
-            });
+            // Check if the button element exists before adding the listener
+            if (startTestButton) {
+                console.log("Start Test button found. Attaching event listener.");
+                startTestButton.addEventListener('click', () => {
+                    console.log("Start Test button clicked.");
+                    mainDashboardSection.classList.add("hidden");
+                    quizFlowContainer.classList.remove("hidden");
+                });
+            } else {
+                console.error("Start Test button not found in the DOM.");
+            }
 
             // Handle student form submission (inside the quiz flow)
             studentForm.addEventListener("submit", (e) => {
