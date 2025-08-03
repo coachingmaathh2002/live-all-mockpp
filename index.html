@@ -1,261 +1,363 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Math Mock Test</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"/>
-  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
-</head>
-<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-6">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WBSLST 2025 Math Mock Test</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- MathJax Configuration and Script -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            },
+            options: {
+                renderActions: {
+                    addMenu: [20, function (doc) {
+                        if (doc.type === "HTML") {
+                            const MENU = MathJax._.ui.menu.Menu;
+                            MENU.defaultStyles(doc.menuStyles);
+                            MENU.defaultFonts(doc.menuFont);
+                        }
+                    }, '']
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <!-- Libraries for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-  <div class="bg-white shadow-xl rounded-lg p-6 w-full max-w-3xl" id="main-content">
-    <div class="mb-6">
-      <h1 class="text-3xl font-bold text-center text-gray-800">Math Mock Test</h1>
-    </div>
-
-    <!-- Student Info Form -->
-    <form id="student-form" class="space-y-4">
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Full Name</label>
-        <input type="text" id="student-name" required class="w-full p-2 border rounded"/>
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Student ID / Roll No.</label>
-        <input type="text" id="student-id" required class="w-full p-2 border rounded"/>
-      </div>
-      <button class="w-full bg-indigo-600 text-white p-2 rounded hover:bg-indigo-700">Start Test</button>
-    </form>
-
-    <!-- Quiz Section -->
-    <div id="quiz-section" class="hidden mt-6">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-bold text-gray-800">Test Questions</h2>
-        <span id="timer" class="bg-gray-200 text-gray-700 font-bold px-3 py-1 rounded">--:--</span>
-      </div>
-      <form id="quiz-form" class="space-y-6"></form>
-      <button id="submit-btn" class="w-full mt-6 bg-green-600 text-white p-2 rounded hover:bg-green-700">Submit Test</button>
-    </div>
-
-    <!-- Submission Success -->
-    <div id="success-message" class="hidden text-center mt-6">
-      <h2 class="text-2xl font-bold text-green-700">Test Submitted!</h2>
-      <p class="text-gray-600">Thank you for participating.</p>
-    </div>
-
-    <!-- Admin Button -->
-    <div class="text-center mt-8">
-      <button id="admin-login-btn" class="text-sm text-gray-600 hover:underline">Teacher Panel</button>
-    </div>
-  </div>
-
-  <!-- Admin Panel Modal -->
-  <div id="admin-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center hidden z-50">
-    <div class="bg-white rounded-lg p-6 max-w-lg w-full">
-      <h2 class="text-xl font-bold mb-4">Teacher Login</h2>
-      <form id="admin-login-form" class="space-y-4">
-        <input type="password" id="admin-password" placeholder="Enter admin password" class="w-full p-2 border rounded" required />
-        <button class="w-full bg-indigo-600 text-white p-2 rounded hover:bg-indigo-700">Login</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Admin Panel -->
-  <div id="admin-panel" class="fixed inset-0 bg-white overflow-y-auto p-6 hidden z-40">
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">Teacher Panel</h2>
-    <button id="admin-close" class="mb-4 text-sm text-blue-500 hover:underline">← Back to Student View</button>
-
-    <h3 class="text-lg font-semibold mt-4 mb-2">Paste Quiz HTML</h3>
-    <textarea id="quiz-html-input" rows="10" class="w-full border p-2 rounded mb-2" placeholder="Paste HTML with <script id='quiz-data'> inside..."></textarea>
-    <button id="load-quiz-btn" class="bg-green-600 text-white px-4 py-2 rounded">Load Quiz</button>
-
-    <h3 class="text-lg font-semibold mt-6 mb-2">Submissions</h3>
-    <p id="submission-count" class="text-sm text-gray-600 mb-2">Loading...</p>
-    <div id="submissions-list" class="overflow-auto"></div>
-  </div>
-
-  <script>
-    const ADMIN_PASSWORD = "12345678900";
-
-    let quizData = null;
-    let timerInterval = null;
-    const SUBMISSION_LIMIT = 50;
-    let studentId = null;
-
-    function loadQuizFromLocal() {
-      const data = localStorage.getItem("math_quiz_data");
-      if (data) quizData = JSON.parse(data);
-    }
-
-    function startTimer(duration) {
-      let time = duration * 60;
-      const timerEl = document.getElementById("timer");
-
-      const update = () => {
-        const minutes = Math.floor(time / 60);
-        const seconds = time % 60;
-        timerEl.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-        if (--time < 0) {
-          clearInterval(timerInterval);
-          document.getElementById("submit-btn").click();
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* A very light gray background */
         }
-      };
-      update();
-      timerInterval = setInterval(update, 1000);
-    }
+        /* Custom styles for MathJax to ensure proper alignment */
+        .math {
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 1.125rem; /* Matches text-lg from Tailwind */
+        }
+        /* Add button hover effect */
+        .btn-primary:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1-2px rgba(0, 0, 0, 0.06);
+            transform: translateY(-2px);
+            transition: all 0.2s ease-in-out;
+        }
+        /* Style for the answer options */
+        .option-label {
+            cursor: pointer;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border-width: 2px;
+            border-color: #e2e8f0; /* Default border color */
+            transition: all 0.2s;
+        }
+        .option-label:hover {
+            background-color: #f7fafc; /* Lighter background on hover */
+            border-color: #cbd5e0;
+        }
+        input[type="radio"]:checked + .option-label {
+            background-color: #bfdbfe; /* Light blue when checked */
+            border-color: #3b82f6; /* Blue border when checked */
+        }
+        .hero-bg {
+            background-image: linear-gradient(to right, #4c1d95, #3b0764); /* Deep purple gradient */
+        }
+        .testimonial-bg {
+            background-color: #1f2937; /* Dark gray for testimonials */
+        }
+        .testimonial-card {
+            background-color: #374151; /* Slightly lighter gray for testimonial card */
+        }
+    </style>
+</head>
 
-    function renderQuiz() {
-      const form = document.getElementById("quiz-form");
-      form.innerHTML = "";
-      quizData.questions.forEach((q, idx) => {
-        const qDiv = document.createElement("div");
-        qDiv.className = "latex-question";
-        qDiv.innerHTML = `<p class="font-semibold mb-2">Q${idx + 1}: ${q.question}</p>` + q.options.map((opt, i) => `
-          <div>
-            <label>
-              <input type="radio" name="q${idx}" value="${i}" class="mr-2"> ${opt}
-            </label>
-          </div>
-        `).join("");
-        form.appendChild(qDiv);
-      });
-      renderMathInElement(form);
-    }
+<body class="min-h-screen">
+    <!-- Main Dashboard Section -->
+    <div id="main-dashboard-section" class="min-h-screen hero-bg text-white flex flex-col items-center">
+        <!-- Hero Section -->
+        <div class="text-center max-w-4xl w-full py-20 px-4 md:px-8">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in-down">WBSLST 2025</h1>
+            <p class="text-xl md:text-2xl text-gray-300 font-light mb-8 animate-fade-in-up">
+                Practice with our free mock tests to prepare for your Math exam.
+            </p>
+            <button id="start-test-button" class="bg-blue-500 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300 btn-primary">
+                Start Free Mock Test
+            </button>
+        </div>
 
-    function calculateScore(answers) {
-      let score = 0;
-      quizData.questions.forEach((q, i) => {
-        if (parseInt(answers[i]) === q.correctAnswer) score += q.points;
-      });
-      return score;
-    }
+        <!-- About Us Section (Updated) -->
+        <div id="about-us-section" class="bg-slate-800 py-16 md:py-24 px-4 md:px-8 w-full text-white">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="flex justify-center mb-6">
+                    <!-- SVG for a graduation cap -->
+                    <svg class="w-16 h-16 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M21.5 8.01L12 3.51L2.5 8.01L12 12.51L21.5 8.01ZM21.5 10.01L12 14.51L2.5 10.01V12.01L12 16.51L21.5 12.01V10.01ZM21.5 14.01L12 18.51L2.5 14.01V16.01L12 20.51L21.5 16.01V14.01Z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">About Our Portal</h2>
+                <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-4">
+                    Welcome to the Advanced Math Mock Test Portal, your one-stop solution for comprehensive exam preparation. Our platform is designed to help students master various mathematical concepts through a wide range of mock tests tailored for specific competitive exams.
+                </p>
+                <p class="text-lg md:text-xl text-gray-300 leading-relaxed">
+                    We provide a structured learning experience with carefully curated practice tests, helping you to identify your strengths and weaknesses. Dive into our extensive library of questions and prepare yourself to ace your exams with confidence!
+                </p>
+            </div>
+        </div>
 
-    function getStudentSubmissions() {
-      const data = localStorage.getItem("math_submissions") || "[]";
-      return JSON.parse(data);
-    }
+        <!-- Testimonials Section -->
+        <div id="testimonials-section" class="testimonial-bg text-white py-16 md:py-24 px-4 md:px-8 w-full">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">What Our Students Say</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+                    <!-- Testimonial Card 1 -->
+                    <div class="testimonial-card p-6 rounded-xl shadow-xl flex flex-col h-full">
+                        <p class="text-lg text-gray-300 italic mb-4">
+                            "The mock tests here are top-notch and a real confidence booster. I feel much more prepared for the SLST exam."
+                        </p>
+                        <div class="mt-auto">
+                            <p class="font-semibold text-white">Ananya Majumdar</p>
+                            <p class="text-sm text-gray-400">SLST Math Aspirant</p>
+                        </div>
+                    </div>
+                    <!-- Testimonial Card 2 -->
+                    <div class="testimonial-card p-6 rounded-xl shadow-xl flex flex-col h-full">
+                        <p class="text-lg text-gray-300 italic mb-4">
+                            "The questions are very relevant to the syllabus. This platform has been instrumental in my revision strategy."
+                        </p>
+                        <div class="mt-auto">
+                            <p class="font-semibold text-white">Somnath Ghosh</p>
+                            <p class="text-sm text-gray-400">SLST Math Aspirant</p>
+                        </div>
+                    </div>
+                    <!-- Testimonial Card 3 -->
+                    <div class="testimonial-card p-6 rounded-xl shadow-xl flex flex-col h-full">
+                        <p class="text-lg text-gray-300 italic mb-4">
+                            "I love the one-by-one question format. It helps me focus on each problem without feeling overwhelmed. Highly recommended!"
+                        </p>
+                        <div class="mt-auto">
+                            <p class="font-semibold text-white">Priya Roy</p>
+                            <p class="text-sm text-gray-400">SLST Math Aspirant</p>
+                        </div>
+                    </div>
+                    <!-- Testimonial Card 4 -->
+                    <div class="testimonial-card p-6 rounded-xl shadow-xl flex flex-col h-full">
+                        <p class="text-lg text-gray-300 italic mb-4">
+                            "This website has significantly improved my speed and accuracy. The detailed questions are exactly what I needed for my preparation."
+                        </p>
+                        <div class="mt-auto">
+                            <p class="font-semibold text-white">Arindam Das</p>
+                            <p class="text-sm text-gray-400">SLST Math Aspirant</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Hidden Quiz Sections (Initial Forms, Quiz, and Results) -->
+    <div id="quiz-flow-container" class="fixed inset-0 bg-gray-100 z-50 p-4 hidden overflow-y-auto flex items-center justify-center">
+        <div class="bg-white shadow-2xl rounded-xl p-6 md:p-10 w-full max-w-4xl space-y-8">
+            <div class="flex justify-start">
+                <button id="back-to-home" class="text-gray-500 hover:text-gray-900 transition-colors duration-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Student Info Form (inside the hidden container) -->
+            <div id="student-form-section">
+                <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Start Your Test</h1>
+                <div id="message-box" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <span class="block sm:inline" id="message-text"></span>
+                </div>
+                <form id="student-form" class="space-y-4">
+                    <div>
+                        <label for="studentName" class="block text-sm font-medium text-gray-700">Name</label>
+                        <input type="text" id="studentName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2" placeholder="John Doe" required>
+                    </div>
+                    <div>
+                        <label for="mobileNumber" class="block text-sm font-medium text-gray-700">Mobile Number</label>
+                        <input type="tel" id="mobileNumber" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2" placeholder="10-digit number" required pattern="[0-9]{10}" maxlength="10">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-lg btn-primary">Start Quiz</button>
+                </form>
+            </div>
 
-    function saveSubmission(data) {
-      const submissions = getStudentSubmissions();
-      if (submissions.find(s => s.studentId === data.studentId)) return false;
-      submissions.push(data);
-      localStorage.setItem("math_submissions", JSON.stringify(submissions));
-      return true;
-    }
+            <!-- Quiz Section (Hidden by default) -->
+            <div id="quiz-section" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Quiz</h2>
+                    <div class="text-lg font-medium text-gray-600">Time Left: <span id="timer"></span></div>
+                </div>
+                <div id="quiz-container" class="space-y-6">
+                    <!-- Single question will be dynamically inserted here -->
+                </div>
+                <div class="mt-8 flex justify-between">
+                    <p id="question-counter" class="text-gray-500 text-sm font-medium"></p>
+                    <button id="next-button" class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-md shadow-lg btn-primary">Next Question</button>
+                </div>
+            </div>
 
-    function renderSubmissions() {
-      const container = document.getElementById("submissions-list");
-      const subs = getStudentSubmissions().sort((a, b) => b.score - a.score);
-      document.getElementById("submission-count").textContent = `Submissions: ${subs.length} / ${SUBMISSION_LIMIT}`;
-      if (subs.length === 0) {
-        container.innerHTML = `<p class="text-gray-500">No submissions yet.</p>`;
-        return;
-      }
+            <!-- Results Section (Hidden by default) -->
+            <div id="results-section" class="hidden text-center">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Quiz Results</h2>
+                <div class="space-y-4">
+                    <p class="text-lg font-medium text-gray-700">Student: <span id="final-student-name" class="font-bold"></span></p>
+                    <p class="text-lg font-medium text-gray-700">Mobile: <span id="final-mobile-number" class="font-bold"></span></p>
+                    <p class="text-2xl font-semibold text-gray-800">Total Score: <span id="final-score" class="text-blue-600 font-extrabold text-4xl"></span></p>
+                    <p id="time-taken" class="text-sm text-gray-500"></p>
+                </div>
+                <button id="restart-button" class="mt-8 bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-lg btn-primary">Try Again</button>
+                <button id="download-pdf-button" class="mt-4 bg-green-600 text-white font-semibold py-2 px-4 rounded-md shadow-lg btn-primary">Download Scorecard</button>
+            </div>
+        </div>
+    </div>
 
-      const table = document.createElement("table");
-      table.className = "w-full border text-sm";
-      table.innerHTML = `
-        <thead><tr class="bg-gray-200">
-          <th class="p-2 text-left">Rank</th>
-          <th class="p-2 text-left">Student ID</th>
-          <th class="p-2 text-left">Name</th>
-          <th class="p-2 text-left">Score</th>
-          <th class="p-2 text-left">Time</th>
-        </tr></thead>
-        <tbody>${subs.map((s, i) => `
-          <tr class="border-t">
-            <td class="p-2">${i + 1}</td>
-            <td class="p-2">${s.studentId}</td>
-            <td class="p-2">${s.studentName}</td>
-            <td class="p-2 font-bold">${s.score}</td>
-            <td class="p-2">${new Date(s.timestamp).toLocaleString()}</td>
-          </tr>`).join("")}</tbody>
-      `;
-      container.innerHTML = "";
-      container.appendChild(table);
-    }
-
-    // Event listeners
-    document.getElementById("student-form").addEventListener("submit", e => {
-      e.preventDefault();
-      loadQuizFromLocal();
-      if (!quizData) return alert("Quiz not available.");
-      const name = document.getElementById("student-name").value.trim();
-      studentId = document.getElementById("student-id").value.trim();
-      if (!name || !studentId) return;
-
-      if (getStudentSubmissions().some(s => s.studentId === studentId)) {
-        alert("You have already submitted the test.");
-        return;
-      }
-
-      document.getElementById("student-form").classList.add("hidden");
-      document.getElementById("quiz-section").classList.remove("hidden");
-      renderQuiz();
-      startTimer(quizData.duration || 30);
-    });
-
-    document.getElementById("submit-btn").addEventListener("click", () => {
-      clearInterval(timerInterval);
-      const answers = [];
-      quizData.questions.forEach((q, i) => {
-        const selected = document.querySelector(`input[name="q${i}"]:checked`);
-        answers.push(selected ? selected.value : null);
-      });
-      const score = calculateScore(answers);
-      const name = document.getElementById("student-name").value.trim();
-
-      const submission = {
-        studentName: name,
-        studentId,
-        answers,
-        score,
-        timestamp: new Date().toISOString()
-      };
-
-      const saved = saveSubmission(submission);
-      if (!saved) return alert("Duplicate submission.");
-      document.getElementById("quiz-section").classList.add("hidden");
-      document.getElementById("success-message").classList.remove("hidden");
-    });
-
-    document.getElementById("admin-login-btn").addEventListener("click", () => {
-      document.getElementById("admin-modal").classList.remove("hidden");
-    });
-
-    document.getElementById("admin-login-form").addEventListener("submit", e => {
-      e.preventDefault();
-      const pwd = document.getElementById("admin-password").value;
-      if (pwd !== ADMIN_PASSWORD) return alert("Wrong password.");
-      document.getElementById("admin-modal").classList.add("hidden");
-      loadQuizFromLocal();
-      renderSubmissions();
-      document.getElementById("admin-panel").classList.remove("hidden");
-    });
-
-    document.getElementById("admin-close").addEventListener("click", () => {
-      document.getElementById("admin-panel").classList.add("hidden");
-    });
-
-    document.getElementById("load-quiz-btn").addEventListener("click", () => {
-      const htmlText = document.getElementById("quiz-html-input").value.trim();
-      if (!htmlText) return alert("Paste some HTML!");
-      try {
-        const doc = new DOMParser().parseFromString(htmlText, "text/html");
-        const script = doc.querySelector("#quiz-data");
-        if (!script) return alert("Missing <script id='quiz-data'>");
-        const quiz = JSON.parse(script.textContent);
-        if (!quiz.questions || !Array.isArray(quiz.questions)) throw new Error("Invalid quiz format.");
-        localStorage.setItem("math_quiz_data", JSON.stringify(quiz));
-        alert("Quiz loaded successfully!");
-        quizData = quiz;
-      } catch (err) {
-        console.error(err);
-        alert("Failed to parse quiz.");
-      }
-    });
-  </script>
-</body>
-</html>
+    <script>
+        // --- Hardcoded Quiz Data ---
+        const quizData = {
+            duration: 30, // Test duration in minutes
+            questions: [
+                {
+                    question: "Let $V$ be a vector space over a field $F$. A subset $S \\subset V$ is a subspace if and only if:",
+                    options: [
+                        "$S$ is non-empty and for any vectors $\\mathbf{u}, \\mathbf{v} \\in S$ and scalars $c, d \\in F$, the linear combination $c\\mathbf{u} + d\\mathbf{v}$ is in $S$.",
+                        "$S$ contains the zero vector and is closed under vector addition.",
+                        "$S$ is non-empty and for any vector $\\mathbf{u} \\in S$ and scalar $c \\in F$, the product $c\\mathbf{u}$ is in $S$.",
+                        "$S$ is a subset of $V$."
+                    ],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "What is the determinant of the matrix $\\begin{pmatrix} 2 & 3 \\\\ 4 & 5 \\end{pmatrix}$?",
+                    options: ["$2$", "$-2$", "$22$", "$-22$"],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "A linear transformation $T: V \\to W$ is an isomorphism if it is:",
+                    options: [
+                        "Surjective and its kernel is non-trivial.",
+                        "Injective and its image is not equal to $W$.",
+                        "Both injective and surjective.",
+                        "Bijective but not a homomorphism."
+                    ],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "The set of all polynomials of degree at most 3 with real coefficients, denoted by $P_3(\\mathbb{R})$, forms a vector space. What is its dimension?",
+                    options: ["$2$", "$3$", "$4$", "$5$"],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "Which of the following sets is a basis for $\\mathbb{R}^2$?",
+                    options: [
+                        "$\\{ (1, 0), (2, 0) \\}$",
+                        "$\\{ (1, 1), (2, 2) \\}$",
+                        "$\\{ (1, 0), (0, 1) \\}$",
+                        "$\\{ (0, 0), (1, 1) \\}$"
+                    ],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "What is the rank of the matrix $\\begin{pmatrix} 1 & 2 & 3 \\\\ 2 & 4 & 6 \\\\ 3 & 6 & 9 \\end{pmatrix}$?",
+                    options: ["$0$", "$1$", "$2$", "$3$"],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "Let $T: \\mathbb{R}^2 \\to \\mathbb{R}^2$ be a linear transformation defined by $T(x, y) = (x+y, x-y)$. The matrix representation of $T$ with respect to the standard basis is:",
+                    options: [
+                        "$\\begin{pmatrix} 1 & 1 \\\\ 1 & -1 \\end{pmatrix}$",
+                        "$\\begin{pmatrix} 1 & 1 \\\\ -1 & 1 \\end{pmatrix}$",
+                        "$\\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\end{pmatrix}$",
+                        "$\\begin{pmatrix} 1 & -1 \\\\ 1 & 1 \\end{pmatrix}$"
+                    ],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "Let $A$ be a $3 \\times 3$ matrix with eigenvalues $\\lambda_1=1, \\lambda_2=2, \\lambda_3=3$. What is the trace of $A$?",
+                    options: ["$1$", "$2$", "$3$", "$6$"],
+                    correctAnswer: 3,
+                    points: 1
+                },
+                {
+                    question: "For a square matrix $A$, if $\\det(A) = 0$, then $A$ is:",
+                    options: [
+                        "Invertible.",
+                        "Singular.",
+                        "Orthogonal.",
+                        "Diagonalizable."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "The null space (or kernel) of a linear transformation $T$ is the set of all vectors $\\mathbf{v}$ such that:",
+                    options: [
+                        "$T(\\mathbf{v}) \\ne 0$",
+                        "$T(\\mathbf{v}) = \\mathbf{0}$",
+                        "$\\mathbf{v} = \\mathbf{0}$",
+                        "$T(\\mathbf{v})$ is in the image of $T$."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "What is the value of $i$ in the complex numbers, where $i^2 = -1$?",
+                    options: ["$i$", "$1$", "$-1$", "$\\sqrt{-1}$"],
+                    correctAnswer: 3,
+                    points: 1
+                },
+                {
+                    question: "A set of vectors $\\{ \\mathbf{v}_1, \\mathbf{v}_2, \\dots, \\mathbf{v}_n \\}$ is linearly independent if the only solution to the equation $c_1\\mathbf{v}_1 + c_2\\mathbf{v}_2 + \\dots + c_n\\mathbf{v}_n = \\mathbf{0}$ is:",
+                    options: [
+                        "$c_1=c_2=\\dots=c_n=1$",
+                        "$c_1=c_2=\\dots=c_n=0$",
+                        "The vectors are orthogonal.",
+                        "The vectors form a basis."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "Which of the following is an eigenvector of the matrix $\\begin{pmatrix} 2 & 0 \\\\ 0 & 3 \\end{pmatrix}$ with eigenvalue 2?",
+                    options: ["$(1, 0)$", "$(0, 1)$", "$(1, 1)$", "$(2, 3)$"],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "The dimension of the row space of a matrix is equal to its:",
+                    options: [
+                        "Nullity.",
+                        "Column space dimension.",
+                        "Determinant.",
+                        "Trace."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "The characteristic polynomial of a matrix $A$ is given by $p(\\lambda) = \\det(A - \\lambda I)$. The roots of this polynomial are the:",
+                    options: [
+                        "Determinants of submatric
