@@ -1,11 +1,600 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Mock Test</title>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX for beautiful math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha348-GvrMHS3A5VnU/5L/m/a+Q0rC5f1B+Cg+lD+bB+E9w+QG+g==" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha348-F8r5yQ+a9Q2F/p+lFz2/Jd+I5F7h/C9r4n3p1/z1q1+q+g==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha348-XzUqg1q+G2rK6f6d6mC4q7i4j+g+p+r+z+z+a/g+g==" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <!-- Firebase CDN -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, collection, query, addDoc, getDocs, where, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // IMPORTANT: Replace these with your actual Firebase configuration
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const __initial_auth_token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : '';
+        const __app_id = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        let app = null;
+        let db = null;
+        let auth = null;
+        let userId = null;
+        let isAuthReady = false;
+
+        window.firebase = {
+            app: null,
+            db: null,
+            auth: null,
+            userId: null,
+            isAuthReady: false,
+        };
+
+        async function initFirebase() {
+            if (Object.keys(firebaseConfig).length > 0) {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                window.firebase = { app, db, auth };
+
+                try {
+                    if (__initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                } catch (error) {
+                    console.error("Firebase sign-in failed:", error);
+                    // Fallback to anonymous sign-in if custom token fails
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        window.firebase.userId = userId;
+                        window.firebase.isAuthReady = true;
+                        console.log("User signed in:", userId);
+                        isAuthReady = true;
+                        // Event to signal that Firebase is ready
+                        document.dispatchEvent(new CustomEvent('firebaseReady'));
+                    } else {
+                        userId = null;
+                        window.firebase.userId = null;
+                        window.firebase.isAuthReady = true;
+                        isAuthReady = true;
+                        console.log("User signed out.");
+                        // Event to signal that Firebase is ready
+                        document.dispatchEvent(new CustomEvent('firebaseReady'));
+                    }
+                });
+            } else {
+                console.error("Firebase config is missing. Please set up Firebase.");
+                // Dispatch event to allow the app to run without Firestore
+                document.dispatchEvent(new CustomEvent('firebaseReady'));
+            }
+        }
+        initFirebase();
+
+        // Admin password for the teacher's panel
+        const ADMIN_PASSWORD = "your_admin_password_here"; // CHANGE THIS PASSWORD!
+
+        // Firestore paths
+        const appId = __app_id;
+        const testPath = `artifacts/${appId}/public/data/math_mock_test`;
+        const submissionsPath = `artifacts/${appId}/public/data/math_submissions`;
+        const submissionLimit = 50;
+
+        // Function to create or update the quiz
+        async function updateQuiz(quizData) {
+            if (!window.firebase.isAuthReady) {
+                await new Promise(resolve => document.addEventListener('firebaseReady', resolve));
+            }
+            const { db } = window.firebase;
+            if (!db) {
+                alert("Firestore not initialized.");
+                return;
+            }
+            try {
+                await setDoc(doc(db, testPath, 'quiz_data'), quizData);
+                console.log("Quiz updated successfully!");
+                alert("Quiz saved!");
+            } catch (e) {
+                console.error("Error updating quiz: ", e);
+                alert("Failed to save quiz. Check the console for details.");
+            }
+        }
+        window.updateQuiz = updateQuiz;
+
+        // Function to get the quiz data
+        async function getQuizData() {
+            if (!window.firebase.isAuthReady) {
+                await new Promise(resolve => document.addEventListener('firebaseReady', resolve));
+            }
+            const { db } = window.firebase;
+            if (!db) {
+                return null;
+            }
+            try {
+                const docRef = doc(db, testPath, 'quiz_data');
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    return docSnap.data();
+                } else {
+                    console.log("No quiz data found!");
+                    return null;
+                }
+            } catch (e) {
+                console.error("Error getting quiz data:", e);
+                return null;
+            }
+        }
+        window.getQuizData = getQuizData;
+
+        // Function to check submission limit and submit test
+        async function submitTest(studentData, answers, score) {
+            if (!window.firebase.isAuthReady) {
+                await new Promise(resolve => document.addEventListener('firebaseReady', resolve));
+            }
+            const { db, userId } = window.firebase;
+            if (!db || !userId) {
+                alert("Authentication failed. Please refresh the page.");
+                return;
+            }
+            const submissionsRef = collection(db, submissionsPath);
+            try {
+                // Check if the student has already submitted
+                const existingSubmissions = await getDocs(query(submissionsRef, where("studentId", "==", studentData.studentId)));
+                if (!existingSubmissions.empty) {
+                    alert("You have already submitted this test.");
+                    return;
+                }
+
+                // Check the total number of submissions
+                const q = query(submissionsRef, limit(submissionLimit + 1)); // Fetch 1 more than the limit to be safe
+                const snapshot = await getDocs(q);
+                if (snapshot.docs.length >= submissionLimit) {
+                    alert("The submission limit has been reached. The test is now closed.");
+                    return;
+                }
+
+                await addDoc(submissionsRef, {
+                    ...studentData,
+                    answers,
+                    score,
+                    timestamp: new Date().toISOString(),
+                });
+                alert("Test submitted successfully!");
+                document.getElementById('quiz-container').classList.add('hidden');
+                document.getElementById('submission-success').classList.remove('hidden');
+            } catch (e) {
+                console.error("Error submitting test: ", e);
+                alert("Failed to submit test. Please try again.");
+            }
+        }
+        window.submitTest = submitTest;
+
+        // Function to get all submissions for the teacher's panel
+        async function getSubmissions() {
+            if (!window.firebase.isAuthReady) {
+                await new Promise(resolve => document.addEventListener('firebaseReady', resolve));
+            }
+            const { db } = window.firebase;
+            if (!db) {
+                return [];
+            }
+            try {
+                const submissionsRef = collection(db, submissionsPath);
+                const q = query(submissionsRef);
+                // Use onSnapshot for real-time updates
+                onSnapshot(q, (snapshot) => {
+                    const submissions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderSubmissions(submissions);
+                });
+            } catch (e) {
+                console.error("Error getting submissions:", e);
+            }
+        }
+        window.getSubmissions = getSubmissions;
+
+        // Function to render the submissions in the teacher's panel
+        function renderSubmissions(submissions) {
+            const container = document.getElementById('submissions-list');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            // Sort submissions by score (descending)
+            submissions.sort((a, b) => b.score - a.score);
+
+            if (submissions.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-500">No submissions yet.</p>';
+                document.getElementById('submissions-count').textContent = `Submissions: 0 / ${submissionLimit}`;
+                return;
+            }
+
+            document.getElementById('submissions-count').textContent = `Submissions: ${submissions.length} / ${submissionLimit}`;
+
+            const table = document.createElement('table');
+            table.className = 'min-w-full divide-y divide-gray-200 shadow overflow-hidden sm:rounded-lg';
+            table.innerHTML = `
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student ID</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                    </tr>
+                </thead>
+                <tbody id="submissions-body" class="bg-white divide-y divide-gray-200"></tbody>
+            `;
+            container.appendChild(table);
+            const tableBody = document.getElementById('submissions-body');
+
+            submissions.forEach((submission, index) => {
+                const totalPoints = quizData.questions.reduce((sum, q) => sum + q.points, 0);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${index + 1}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${submission.studentId}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${submission.studentName}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-bold">${submission.score} / ${totalPoints}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(submission.timestamp).toLocaleString()}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        window.renderSubmissions = renderSubmissions;
+    </script>
+    <style>
+        .container {
+            max-width: 800px;
+        }
+        .latex-question p, .latex-question li {
+            display: inline;
+        }
+        .latex-question {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        .katex-display {
+            display: block;
+            text-align: left;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.5rem 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4 font-sans antialiased">
+    <div id="app" class="bg-white shadow-xl rounded-lg p-8 w-full max-w-4xl">
+        <!-- Main Quiz Container -->
+        <div id="quiz-container">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 text-center">Math Mock Test</h1>
+                <p class="text-center text-gray-600 mt-2">Please fill in your details to begin the test.</p>
+            </div>
+            <div id="loading" class="text-center p-10 hidden">
+                <p class="text-xl font-semibold text-gray-700">Loading quiz data...</p>
+            </div>
+            
+            <form id="student-info-form" class="space-y-4">
+                <div>
+                    <label for="student-name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                    <input type="text" id="student-name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" required>
+                </div>
+                <div>
+                    <label for="student-id" class="block text-sm font-medium text-gray-700">Student ID / Roll Number</label>
+                    <input type="text" id="student-id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" required>
+                </div>
+                <button type="submit" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Start Test</button>
+            </form>
+
+            <div id="test-form" class="hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">Test Questions</h2>
+                    <div id="timer-display" class="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-full">--:--</div>
+                </div>
+                <form id="mcq-form" class="space-y-6"></form>
+                <button id="submit-btn" class="w-full mt-8 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Submit Answers</button>
+            </div>
+        </div>
+
+        <!-- Submission Success Message -->
+        <div id="submission-success" class="hidden text-center p-10">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Submission Successful!</h2>
+            <p class="text-lg text-gray-600">Your test has been submitted. Thank you.</p>
+        </div>
+
+        <!-- Teacher/Admin Panel -->
+        <div id="admin-panel" class="hidden mt-8 border-t pt-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Teacher Panel</h2>
+            <p id="submissions-count" class="text-md font-medium text-gray-700 mb-4">Submissions: 0 / 50</p>
+            <div id="submissions-list"></div>
+            
+            <h3 class="text-xl font-bold text-gray-700 mt-8 mb-4">Manage Quiz Questions</h3>
+            <form id="quiz-editor-form" class="space-y-4 p-4 border rounded-lg bg-gray-50">
+                <div id="questions-container" class="space-y-4">
+                    <!-- Question inputs will be added here dynamically -->
+                </div>
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-700">Test Duration (in minutes)</label>
+                    <input type="number" id="test-duration" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm p-2" min="1" value="30">
+                </div>
+                <div class="flex space-x-2">
+                    <button type="button" id="add-question-btn" class="flex-grow py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Add Question</button>
+                    <button type="submit" id="save-quiz-btn" class="flex-grow py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Save Quiz</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Admin Login Modal -->
+        <div id="admin-login-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center hidden">
+            <div class="bg-white rounded-lg p-8 max-w-sm w-full">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Admin Login</h2>
+                <form id="admin-login-form" class="space-y-4">
+                    <div>
+                        <label for="admin-password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="admin-password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" required>
+                    </div>
+                    <button type="submit" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const studentInfoForm = document.getElementById('student-info-form');
+            const testForm = document.getElementById('test-form');
+            const mcqForm = document.getElementById('mcq-form');
+            const quizContainer = document.getElementById('quiz-container');
+            const loading = document.getElementById('loading');
+            const submitBtn = document.getElementById('submit-btn');
+            const timerDisplay = document.getElementById('timer-display');
+            const initialHeaders = document.querySelector('#quiz-container > .mb-8');
+
+            let quizData = null;
+            let studentName = null;
+            let studentId = null;
+            let timerInterval = null;
+
+            // Initially hide the loading message and show the student form
+            loading.classList.add('hidden');
+            studentInfoForm.classList.remove('hidden');
+
+            // Wait for firebase to be ready before fetching data
+            document.addEventListener('firebaseReady', async () => {
+                loading.classList.remove('hidden');
+                quizData = await window.getQuizData();
+                loading.classList.add('hidden');
+                
+                // Render the quiz and math
+                if (quizData && quizData.questions && quizData.questions.length > 0) {
+                    renderQuiz(quizData);
+                } else {
+                    // Show a message if no quiz is found
+                    const noQuizMessage = document.createElement('div');
+                    noQuizMessage.className = 'text-center p-4 text-red-500 font-semibold';
+                    noQuizMessage.textContent = "No quiz found. Please ask your teacher to set up the quiz in the admin panel.";
+                    quizContainer.appendChild(noQuizMessage);
+                    // Disable the start button if there's no quiz
+                    document.getElementById('student-info-form').querySelector('button').disabled = true;
+                }
+                
+                // Add event listener for the admin panel trigger
+                document.getElementById('app').addEventListener('dblclick', () => {
+                    document.getElementById('admin-login-modal').classList.remove('hidden');
+                });
+            });
+
+            // Handle student info form submission
+            studentInfoForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                studentName = document.getElementById('student-name').value;
+                studentId = document.getElementById('student-id').value;
+                
+                if (quizData && quizData.questions && quizData.questions.length > 0) {
+                    initialHeaders.classList.add('hidden');
+                    studentInfoForm.classList.add('hidden');
+                    testForm.classList.remove('hidden');
+                    startTimer(quizData.durationMinutes);
+                } else {
+                    // This case should be handled by the firebaseReady event, but is a good fallback
+                    alert("The quiz is not ready yet. Please try again later.");
+                }
+            });
+
+            // Handle test submission
+            submitBtn.addEventListener('click', () => {
+                submitStudentTest();
+            });
+
+            async function submitStudentTest() {
+                clearInterval(timerInterval);
+                const userAnswers = {};
+                let score = 0;
+                
+                quizData.questions.forEach((q, qIndex) => {
+                    const selectedOption = mcqForm.querySelector(`input[name="question-${qIndex}"]:checked`);
+                    if (selectedOption) {
+                        userAnswers[qIndex] = selectedOption.value;
+                        if (selectedOption.value === q.correctAnswer) {
+                            score += q.points;
+                        }
+                    }
+                });
+                
+                const studentData = { studentName, studentId };
+                await window.submitTest(studentData, userAnswers, score);
+            }
+
+            // Timer logic
+            function startTimer(durationMinutes) {
+                let timeLeft = durationMinutes * 60;
+                
+                function updateTimerDisplay() {
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                }
+                
+                updateTimerDisplay();
+                
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        alert("Time's up! Your test has been submitted automatically.");
+                        submitStudentTest();
+                    }
+                }, 1000);
+            }
+
+            // Render the quiz questions
+            function renderQuiz(data) {
+                mcqForm.innerHTML = '';
+                data.questions.forEach((q, qIndex) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'bg-gray-50 p-6 rounded-lg shadow-sm';
+                    
+                    const questionText = document.createElement('div');
+                    questionText.className = 'text-lg font-semibold text-gray-800 mb-4 latex-question';
+                    questionText.innerHTML = `Q${qIndex + 1}. ${q.questionText}`;
+                    questionDiv.appendChild(questionText);
+                    
+                    const optionsList = document.createElement('ul');
+                    optionsList.className = 'space-y-2';
+                    
+                    q.options.forEach((option, oIndex) => {
+                        const optionItem = document.createElement('li');
+                        optionItem.className = 'flex items-center';
+                        
+                        const optionInput = document.createElement('input');
+                        optionInput.type = 'radio';
+                        optionInput.id = `q${qIndex}-option-${oIndex}`;
+                        optionInput.name = `question-${qIndex}`;
+                        optionInput.value = option;
+                        optionInput.className = 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300';
+                        
+                        const optionLabel = document.createElement('label');
+                        optionLabel.htmlFor = `q${qIndex}-option-${oIndex}`;
+                        optionLabel.className = 'ml-3 block text-sm font-medium text-gray-700 latex-question';
+                        optionLabel.innerHTML = option;
+                        
+                        optionItem.appendChild(optionInput);
+                        optionItem.appendChild(optionLabel);
+                        optionsList.appendChild(optionItem);
+                    });
+                    questionDiv.appendChild(optionsList);
+                    mcqForm.appendChild(questionDiv);
+                });
+                renderMathInElement(document.body);
+            }
+            
+            // --- Teacher Panel Logic ---
+            const adminLoginModal = document.getElementById('admin-login-modal');
+            const adminLoginForm = document.getElementById('admin-login-form');
+            const adminPanel = document.getElementById('admin-panel');
+            const quizEditorForm = document.getElementById('quiz-editor-form');
+            const questionsContainer = document.getElementById('questions-container');
+            const addQuestionBtn = document.getElementById('add-question-btn');
+            const testDurationInput = document.getElementById('test-duration');
+
+            let editorQuestions = [];
+
+            adminLoginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const password = document.getElementById('admin-password').value;
+                if (password === "your_admin_password_here") { // Use the same password here
+                    adminLoginModal.classList.add('hidden');
+                    quizContainer.classList.add('hidden');
+                    adminPanel.classList.remove('hidden');
+                    loadQuizForEditor();
+                    window.getSubmissions();
+                } else {
+                    alert("Incorrect password.");
+                }
+            });
+
+            async function loadQuizForEditor() {
+                const data = await window.getQuizData();
+                if (data && data.questions) {
+                    editorQuestions = data.questions;
+                    testDurationInput.value = data.durationMinutes || 30; // Set duration from data or default
+                } else {
+                    editorQuestions = [
+                        { questionText: "What is the value of $x$ in the equation $2x + 5 = 11$?", options: ["2", "3", "4", "5"], correctAnswer: "3", points: 1 },
+                        { questionText: "Solve for $y$: $y^2 - 4y + 4 = 0$", options: ["1", "2", "3", "4"], correctAnswer: "2", points: 1 }
+                    ];
+                }
+                renderQuizEditor();
+            }
+
+            function renderQuizEditor() {
+                questionsContainer.innerHTML = '';
+                editorQuestions.forEach((q, qIndex) => {
+                    const questionEditor = document.createElement('div');
+                    questionEditor.className = 'p-4 border rounded-lg bg-white shadow-sm';
+                    questionEditor.innerHTML = `
+                        <div class="flex justify-end">
+                             <button type="button" class="remove-question-btn text-red-500 hover:text-red-700 font-bold text-xl leading-none">&times;</button>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Question Text (with LaTeX)</label>
+                            <textarea class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm p-2" rows="2">${q.questionText}</textarea>
+                        </div>
+                        <div class="mt-2">
+                            <label class="block text-sm font-medium text-gray-700">Options (comma separated, e.g., A, B, C)</label>
+                            <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm p-2" value="${q.options.join(', ')}">
+                        </div>
+                        <div class="mt-2">
+                            <label class="block text-sm font-medium text-gray-700">Correct Answer</label>
+                            <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm p-2" value="${q.correctAnswer}">
+                        </div>
+                        <div class="mt-2">
+                            <label class="block text-sm font-medium text-gray-700">Points</label>
+                            <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm p-2" value="${q.points}">
+                        </div>
+                    `;
+                    questionEditor.querySelector('.remove-question-btn').addEventListener('click', () => {
+                        editorQuestions.splice(qIndex, 1);
+                        renderQuizEditor();
+                    });
+                    questionsContainer.appendChild(questionEditor);
+                });
+                renderMathInElement(questionsContainer);
+            }
+
+            addQuestionBtn.addEventListener('click', () => {
+                editorQuestions.push({ questionText: "", options: ["", "", "", ""], correctAnswer: "", points: 1 });
+                renderQuizEditor();
+            });
+
+            quizEditorForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const newQuestions = [];
+                const questionEditors = questionsContainer.querySelectorAll('.p-4');
+                questionEditors.forEach(editor => {
+                    const questionText = editor.querySelector('textarea').value;
+                    const options = editor.querySelector('input[type="text"]').value.split(',').map(o => o.trim());
+                    const correctAnswer = editor.querySelector('input[value="'+options[0]+'"]').value;
+                    const points = parseInt(editor.querySelector('input[type="number"]').value);
+                    newQuestions.push({ questionText, options, correctAnswer, points });
+                });
+                const durationMinutes = parseInt(testDurationInput.value);
+                const quizToSave = { questions: newQuestions, submissionLimit: 50, durationMinutes };
+                await window.updateQuiz(quizToSave);
+                alert("Quiz saved and updated for students!");
+            });
+        });
+    </script>
+</body>
 </html>
