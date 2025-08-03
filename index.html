@@ -5,261 +5,257 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Math Mock Test</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
 </head>
-<body class="bg-gray-100 text-gray-800">
-  <div class="max-w-3xl mx-auto p-6 bg-white shadow mt-8 rounded-lg">
-    <h1 class="text-3xl font-bold text-center mb-4">Math Mock Test</h1>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-6">
 
+  <div class="bg-white shadow-xl rounded-lg p-6 w-full max-w-3xl" id="main-content">
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold text-center text-gray-800">Math Mock Test</h1>
+    </div>
+
+    <!-- Student Info Form -->
     <form id="student-form" class="space-y-4">
-      <input type="text" id="student-name" placeholder="Full Name" class="w-full border p-2 rounded" required>
-      <input type="text" id="student-id" placeholder="Student ID" class="w-full border p-2 rounded" required>
-      <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded">Start Test</button>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Full Name</label>
+        <input type="text" id="student-name" required class="w-full p-2 border rounded"/>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Student ID / Roll No.</label>
+        <input type="text" id="student-id" required class="w-full p-2 border rounded"/>
+      </div>
+      <button class="w-full bg-indigo-600 text-white p-2 rounded hover:bg-indigo-700">Start Test</button>
     </form>
 
+    <!-- Quiz Section -->
     <div id="quiz-section" class="hidden mt-6">
-      <form id="quiz-form" class="space-y-6"></form>
-      <div class="flex justify-between items-center mt-4">
-        <div id="timer" class="text-lg font-semibold">--:--</div>
-        <button id="submit-quiz" class="bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-gray-800">Test Questions</h2>
+        <span id="timer" class="bg-gray-200 text-gray-700 font-bold px-3 py-1 rounded">--:--</span>
       </div>
+      <form id="quiz-form" class="space-y-6"></form>
+      <button id="submit-btn" class="w-full mt-6 bg-green-600 text-white p-2 rounded hover:bg-green-700">Submit Test</button>
     </div>
 
-    <div id="submission-success" class="hidden text-center mt-6">
-      <h2 class="text-xl font-bold">Submission Successful!</h2>
-      <p>Thank you for participating.</p>
+    <!-- Submission Success -->
+    <div id="success-message" class="hidden text-center mt-6">
+      <h2 class="text-2xl font-bold text-green-700">Test Submitted!</h2>
+      <p class="text-gray-600">Thank you for participating.</p>
     </div>
 
-    <div class="text-center mt-10">
-      <button id="admin-btn" class="text-sm text-blue-500 underline">Teacher Panel</button>
+    <!-- Admin Button -->
+    <div class="text-center mt-8">
+      <button id="admin-login-btn" class="text-sm text-gray-600 hover:underline">Teacher Panel</button>
     </div>
   </div>
 
-  <!-- Admin Modal -->
-  <div id="admin-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
-    <div class="bg-white p-6 rounded max-w-md w-full">
-      <h2 class="text-xl font-bold mb-4">Enter Admin Password</h2>
-      <input type="password" id="admin-pass" class="border p-2 w-full mb-4" placeholder="Password" />
-      <button id="admin-login" class="bg-indigo-600 text-white px-4 py-2 rounded w-full">Login</button>
+  <!-- Admin Panel Modal -->
+  <div id="admin-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center hidden z-50">
+    <div class="bg-white rounded-lg p-6 max-w-lg w-full">
+      <h2 class="text-xl font-bold mb-4">Teacher Login</h2>
+      <form id="admin-login-form" class="space-y-4">
+        <input type="password" id="admin-password" placeholder="Enter admin password" class="w-full p-2 border rounded" required />
+        <button class="w-full bg-indigo-600 text-white p-2 rounded hover:bg-indigo-700">Login</button>
+      </form>
     </div>
   </div>
 
   <!-- Admin Panel -->
-  <div id="admin-panel" class="fixed inset-0 bg-gray-900 bg-opacity-90 overflow-auto hidden p-8">
-    <div class="bg-white p-6 rounded max-w-4xl w-full mx-auto">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold">Teacher Panel</h2>
-        <button id="close-admin" class="text-red-500 font-bold">X</button>
-      </div>
+  <div id="admin-panel" class="fixed inset-0 bg-white overflow-y-auto p-6 hidden z-40">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Teacher Panel</h2>
+    <button id="admin-close" class="mb-4 text-sm text-blue-500 hover:underline">← Back to Student View</button>
 
-      <h3 class="text-lg font-semibold mt-4 mb-2">Quiz Questions</h3>
-      <form id="quiz-editor" class="space-y-4 mb-6">
-        <div id="question-list" class="space-y-4"></div>
-        <div>
-          <label class="block text-sm mb-1">Duration (minutes):</label>
-          <input type="number" id="quiz-duration" min="1" value="30" class="w-full border p-2 rounded"/>
-        </div>
-        <div class="flex space-x-2">
-          <button type="button" id="add-question" class="bg-blue-600 text-white px-4 py-2 rounded">Add Question</button>
-          <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Save Quiz</button>
-        </div>
-      </form>
+    <h3 class="text-lg font-semibold mt-4 mb-2">Paste Quiz HTML</h3>
+    <textarea id="quiz-html-input" rows="10" class="w-full border p-2 rounded mb-2" placeholder="Paste HTML with <script id='quiz-data'> inside..."></textarea>
+    <button id="load-quiz-btn" class="bg-green-600 text-white px-4 py-2 rounded">Load Quiz</button>
 
-      <h3 class="text-lg font-semibold mb-2">Submissions</h3>
-      <div id="submissions" class="overflow-x-auto"></div>
-      <button onclick="localStorage.clear(); location.reload();" class="mt-4 bg-red-600 text-white px-4 py-2 rounded">Clear All Data</button>
-    </div>
+    <h3 class="text-lg font-semibold mt-6 mb-2">Submissions</h3>
+    <p id="submission-count" class="text-sm text-gray-600 mb-2">Loading...</p>
+    <div id="submissions-list" class="overflow-auto"></div>
   </div>
 
   <script>
     const ADMIN_PASSWORD = "12345678900";
 
-    const studentForm = document.getElementById("student-form");
-    const quizSection = document.getElementById("quiz-section");
-    const quizForm = document.getElementById("quiz-form");
-    const submitQuiz = document.getElementById("submit-quiz");
-    const timerDisplay = document.getElementById("timer");
-    const successMsg = document.getElementById("submission-success");
-
     let quizData = null;
-    let timer = null;
-    let timeLeft = 0;
+    let timerInterval = null;
+    const SUBMISSION_LIMIT = 50;
+    let studentId = null;
 
-    function getQuizData() {
+    function loadQuizFromLocal() {
       const data = localStorage.getItem("math_quiz_data");
-      return data ? JSON.parse(data) : null;
-    }
-
-    function saveQuizData(data) {
-      localStorage.setItem("math_quiz_data", JSON.stringify(data));
-    }
-
-    function getSubmissions() {
-      return JSON.parse(localStorage.getItem("math_submissions") || "[]");
-    }
-
-    function saveSubmission(sub) {
-      const submissions = getSubmissions();
-      submissions.push(sub);
-      localStorage.setItem("math_submissions", JSON.stringify(submissions));
+      if (data) quizData = JSON.parse(data);
     }
 
     function startTimer(duration) {
-      timeLeft = duration * 60;
-      timer = setInterval(() => {
-        const min = Math.floor(timeLeft / 60);
-        const sec = String(timeLeft % 60).padStart(2, "0");
-        timerDisplay.textContent = `${min}:${sec}`;
-        if (--timeLeft < 0) {
-          clearInterval(timer);
-          submitQuiz.click();
+      let time = duration * 60;
+      const timerEl = document.getElementById("timer");
+
+      const update = () => {
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        timerEl.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+        if (--time < 0) {
+          clearInterval(timerInterval);
+          document.getElementById("submit-btn").click();
         }
-      }, 1000);
+      };
+      update();
+      timerInterval = setInterval(update, 1000);
     }
 
-    studentForm.addEventListener("submit", e => {
-      e.preventDefault();
-      const name = document.getElementById("student-name").value.trim();
-      const id = document.getElementById("student-id").value.trim();
-      const already = getSubmissions().some(s => s.studentId === id);
-      if (already) return alert("You already submitted the test.");
-
-      quizData = getQuizData();
-      if (!quizData) return alert("Quiz not found.");
-
-      studentForm.classList.add("hidden");
-      quizSection.classList.remove("hidden");
-
-      quizForm.innerHTML = "";
-      quizData.questions.forEach((q, i) => {
-        const div = document.createElement("div");
-        div.innerHTML = `
-          <div class="latex-question font-semibold">${q.question}</div>
-          ${q.options.map((opt, j) => `
-            <label class="block">
-              <input type="radio" name="q${i}" value="${j}" class="mr-2"> ${opt}
+    function renderQuiz() {
+      const form = document.getElementById("quiz-form");
+      form.innerHTML = "";
+      quizData.questions.forEach((q, idx) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "latex-question";
+        qDiv.innerHTML = `<p class="font-semibold mb-2">Q${idx + 1}: ${q.question}</p>` + q.options.map((opt, i) => `
+          <div>
+            <label>
+              <input type="radio" name="q${idx}" value="${i}" class="mr-2"> ${opt}
             </label>
-          `).join("")}
-        `;
-        quizForm.appendChild(div);
+          </div>
+        `).join("");
+        form.appendChild(qDiv);
       });
+      renderMathInElement(form);
+    }
 
-      renderMathInElement(quizForm);
-      startTimer(quizData.duration);
-    });
-
-    submitQuiz.addEventListener("click", () => {
-      clearInterval(timer);
-      const answers = [];
+    function calculateScore(answers) {
       let score = 0;
       quizData.questions.forEach((q, i) => {
-        const selected = quizForm.querySelector(`input[name="q${i}"]:checked`);
-        const ans = selected ? parseInt(selected.value) : -1;
-        answers.push(ans);
-        if (ans === q.correctAnswer) score += q.points;
+        if (parseInt(answers[i]) === q.correctAnswer) score += q.points;
       });
-      const studentData = {
-        studentName: document.getElementById("student-name").value.trim(),
-        studentId: document.getElementById("student-id").value.trim(),
+      return score;
+    }
+
+    function getStudentSubmissions() {
+      const data = localStorage.getItem("math_submissions") || "[]";
+      return JSON.parse(data);
+    }
+
+    function saveSubmission(data) {
+      const submissions = getStudentSubmissions();
+      if (submissions.find(s => s.studentId === data.studentId)) return false;
+      submissions.push(data);
+      localStorage.setItem("math_submissions", JSON.stringify(submissions));
+      return true;
+    }
+
+    function renderSubmissions() {
+      const container = document.getElementById("submissions-list");
+      const subs = getStudentSubmissions().sort((a, b) => b.score - a.score);
+      document.getElementById("submission-count").textContent = `Submissions: ${subs.length} / ${SUBMISSION_LIMIT}`;
+      if (subs.length === 0) {
+        container.innerHTML = `<p class="text-gray-500">No submissions yet.</p>`;
+        return;
+      }
+
+      const table = document.createElement("table");
+      table.className = "w-full border text-sm";
+      table.innerHTML = `
+        <thead><tr class="bg-gray-200">
+          <th class="p-2 text-left">Rank</th>
+          <th class="p-2 text-left">Student ID</th>
+          <th class="p-2 text-left">Name</th>
+          <th class="p-2 text-left">Score</th>
+          <th class="p-2 text-left">Time</th>
+        </tr></thead>
+        <tbody>${subs.map((s, i) => `
+          <tr class="border-t">
+            <td class="p-2">${i + 1}</td>
+            <td class="p-2">${s.studentId}</td>
+            <td class="p-2">${s.studentName}</td>
+            <td class="p-2 font-bold">${s.score}</td>
+            <td class="p-2">${new Date(s.timestamp).toLocaleString()}</td>
+          </tr>`).join("")}</tbody>
+      `;
+      container.innerHTML = "";
+      container.appendChild(table);
+    }
+
+    // Event listeners
+    document.getElementById("student-form").addEventListener("submit", e => {
+      e.preventDefault();
+      loadQuizFromLocal();
+      if (!quizData) return alert("Quiz not available.");
+      const name = document.getElementById("student-name").value.trim();
+      studentId = document.getElementById("student-id").value.trim();
+      if (!name || !studentId) return;
+
+      if (getStudentSubmissions().some(s => s.studentId === studentId)) {
+        alert("You have already submitted the test.");
+        return;
+      }
+
+      document.getElementById("student-form").classList.add("hidden");
+      document.getElementById("quiz-section").classList.remove("hidden");
+      renderQuiz();
+      startTimer(quizData.duration || 30);
+    });
+
+    document.getElementById("submit-btn").addEventListener("click", () => {
+      clearInterval(timerInterval);
+      const answers = [];
+      quizData.questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        answers.push(selected ? selected.value : null);
+      });
+      const score = calculateScore(answers);
+      const name = document.getElementById("student-name").value.trim();
+
+      const submission = {
+        studentName: name,
+        studentId,
         answers,
         score,
-        timestamp: new Date().toISOString(),
+        timestamp: new Date().toISOString()
       };
-      saveSubmission(studentData);
-      quizSection.classList.add("hidden");
-      successMsg.classList.remove("hidden");
+
+      const saved = saveSubmission(submission);
+      if (!saved) return alert("Duplicate submission.");
+      document.getElementById("quiz-section").classList.add("hidden");
+      document.getElementById("success-message").classList.remove("hidden");
     });
 
-    // Admin Panel
-    document.getElementById("admin-btn").onclick = () => {
+    document.getElementById("admin-login-btn").addEventListener("click", () => {
       document.getElementById("admin-modal").classList.remove("hidden");
-    };
-
-    document.getElementById("admin-login").onclick = () => {
-      const input = document.getElementById("admin-pass").value;
-      if (input === ADMIN_PASSWORD) {
-        document.getElementById("admin-modal").classList.add("hidden");
-        document.getElementById("admin-panel").classList.remove("hidden");
-        loadAdmin();
-      } else {
-        alert("Incorrect password.");
-      }
-    };
-
-    document.getElementById("close-admin").onclick = () => {
-      document.getElementById("admin-panel").classList.add("hidden");
-    };
-
-    document.getElementById("add-question").onclick = () => {
-      const qContainer = document.getElementById("question-list");
-      const index = qContainer.children.length;
-      const div = document.createElement("div");
-      div.className = "border p-4 rounded";
-      div.innerHTML = `
-        <label>Question:</label>
-        <textarea class="w-full border p-2 rounded mb-2" name="question${index}" rows="2"></textarea>
-        <label>Options:</label>
-        ${[0,1,2,3].map(i => `<input class="w-full border p-1 mb-1" name="option${index}_${i}" placeholder="Option ${i+1}"/>`).join("")}
-        <label>Correct Answer (0-3):</label>
-        <input type="number" min="0" max="3" name="correct${index}" class="w-full border p-2 mb-2"/>
-        <label>Points:</label>
-        <input type="number" min="1" name="points${index}" class="w-full border p-2"/>
-      `;
-      qContainer.appendChild(div);
-    };
-
-    document.getElementById("quiz-editor").addEventListener("submit", e => {
-      e.preventDefault();
-      const qList = document.getElementById("question-list").children;
-      const questions = [];
-      for (let i = 0; i < qList.length; i++) {
-        const qEl = qList[i];
-        const question = qEl.querySelector(`[name=question${i}]`).value;
-        const options = [0,1,2,3].map(j => qEl.querySelector(`[name=option${i}_${j}]`).value);
-        const correct = parseInt(qEl.querySelector(`[name=correct${i}]`).value);
-        const points = parseInt(qEl.querySelector(`[name=points${i}]`).value);
-        if (question && options.every(Boolean) && !isNaN(correct) && !isNaN(points)) {
-          questions.push({ question, options, correctAnswer: correct, points });
-        }
-      }
-      const duration = parseInt(document.getElementById("quiz-duration").value);
-      saveQuizData({ questions, duration });
-      alert("Quiz saved!");
     });
 
-    function loadAdmin() {
-      const submissions = getSubmissions();
-      submissions.sort((a,b) => b.score - a.score);
-      const quiz = getQuizData();
-      const total = quiz ? quiz.questions.reduce((sum, q) => sum + q.points, 0) : 0;
+    document.getElementById("admin-login-form").addEventListener("submit", e => {
+      e.preventDefault();
+      const pwd = document.getElementById("admin-password").value;
+      if (pwd !== ADMIN_PASSWORD) return alert("Wrong password.");
+      document.getElementById("admin-modal").classList.add("hidden");
+      loadQuizFromLocal();
+      renderSubmissions();
+      document.getElementById("admin-panel").classList.remove("hidden");
+    });
 
-      const container = document.getElementById("submissions");
-      container.innerHTML = `
-        <table class="min-w-full text-sm text-left border">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="p-2">#</th>
-              <th class="p-2">Student</th>
-              <th class="p-2">ID</th>
-              <th class="p-2">Score</th>
-              <th class="p-2">Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${submissions.map((s, i) => `
-              <tr class="border-t">
-                <td class="p-2">${i+1}</td>
-                <td class="p-2">${s.studentName}</td>
-                <td class="p-2">${s.studentId}</td>
-                <td class="p-2 font-bold">${s.score} / ${total}</td>
-                <td class="p-2">${new Date(s.timestamp).toLocaleString()}</td>
-              </tr>`).join("")}
-          </tbody>
-        </table>
-      `;
-    }
+    document.getElementById("admin-close").addEventListener("click", () => {
+      document.getElementById("admin-panel").classList.add("hidden");
+    });
+
+    document.getElementById("load-quiz-btn").addEventListener("click", () => {
+      const htmlText = document.getElementById("quiz-html-input").value.trim();
+      if (!htmlText) return alert("Paste some HTML!");
+      try {
+        const doc = new DOMParser().parseFromString(htmlText, "text/html");
+        const script = doc.querySelector("#quiz-data");
+        if (!script) return alert("Missing <script id='quiz-data'>");
+        const quiz = JSON.parse(script.textContent);
+        if (!quiz.questions || !Array.isArray(quiz.questions)) throw new Error("Invalid quiz format.");
+        localStorage.setItem("math_quiz_data", JSON.stringify(quiz));
+        alert("Quiz loaded successfully!");
+        quizData = quiz;
+      } catch (err) {
+        console.error(err);
+        alert("Failed to parse quiz.");
+      }
+    });
   </script>
 </body>
 </html>
