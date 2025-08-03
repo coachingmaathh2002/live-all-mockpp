@@ -360,4 +360,459 @@
                 {
                     question: "The characteristic polynomial of a matrix $A$ is given by $p(\\lambda) = \\det(A - \\lambda I)$. The roots of this polynomial are the:",
                     options: [
-                        "Determinants of submatric
+                        "Determinants of submatrices.",
+                        "Traces of $A$.",
+                        "Eigenvalues of $A$.",
+                        "Ranks of $A$."
+                    ],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "If $T: V \\to W$ is a linear transformation, then the dimension of the image of $T$ is called the:",
+                    options: [
+                        "Rank of $T$.",
+                        "Nullity of $T$.",
+                        "Trace of $T$.",
+                        "Determinant of $T$."
+                    ],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "Which of the following is not a property of an inner product space?",
+                    options: [
+                        "Commutativity: $\\langle u, v \\rangle = \\langle v, u \\rangle$",
+                        "Linearity in the first argument: $\\langle au+bv, w \\rangle = a\\langle u, w \\rangle + b\\langle v, w \\rangle$",
+                        "Positive-definiteness: $\\langle v, v \\rangle \\ge 0$ and $\\langle v, v \\rangle = 0$ if and only if $v = 0$.",
+                        "Distributivity: $\\langle u, v+w \\rangle = \\langle u, v \\rangle + \\langle u, w \\rangle$"
+                    ],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "The Gram-Schmidt process is used to:",
+                    options: [
+                        "Find the determinant of a matrix.",
+                        "Construct an orthogonal basis from a given basis.",
+                        "Solve a system of linear equations.",
+                        "Find the eigenvalues of a matrix."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "The geometric multiplicity of an eigenvalue $\\lambda$ is the dimension of the corresponding:",
+                    options: [
+                        "Eigenspace.",
+                        "Null space.",
+                        "Row space.",
+                        "Column space."
+                    ],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "A matrix $A$ is diagonalizable if and only if for every eigenvalue $\\lambda$, its algebraic multiplicity equals its:",
+                    options: [
+                        "Trace.",
+                        "Rank.",
+                        "Geometric multiplicity.",
+                        "Determinant."
+                    ],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "The identity matrix $I$ is a special case of a:",
+                    options: [
+                        "Symmetric matrix.",
+                        "Diagonal matrix.",
+                        "Singular matrix.",
+                        "Upper triangular matrix."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "The transpose of a matrix $A$, denoted by $A^T$, is obtained by:",
+                    options: [
+                        "Interchanging its rows and columns.",
+                        "Multiplying all elements by -1.",
+                        "Taking the determinant.",
+                        "Swapping the main diagonal elements."
+                    ],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "For a linear system of equations $A\\mathbf{x} = \\mathbf{b}$, a unique solution exists if and only if:",
+                    options: [
+                        "$A$ is a square matrix.",
+                        "$\\det(A) = 0$.",
+                        "$A$ is invertible.",
+                        "The system is homogeneous."
+                    ],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "The set of all $2 \\times 2$ matrices with real entries forms a vector space. What is its dimension?",
+                    options: ["$2$", "$3$", "$4$", "$5$"],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "The inverse of a $2 \\times 2$ matrix $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$ is $\\frac{1}{ad-bc} \\begin{pmatrix} d & -b \\\\ -c & a \\end{pmatrix}$. This inverse exists only if:",
+                    options: [
+                        "$a+d \\ne 0$",
+                        "$ad-bc \\ne 0$",
+                        "$a-d \\ne 0$",
+                        "$ad+bc \\ne 0$"
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "A set of vectors that are all mutually orthogonal and have a norm of 1 is called an:",
+                    options: [
+                        "Orthogonal basis.",
+                        "Orthonormal basis.",
+                        "Linear combination.",
+                        "Eigenbasis."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "The characteristic equation of a matrix $A$ is used to find its:",
+                    options: [
+                        "Inverse.",
+                        "Rank.",
+                        "Eigenvalues.",
+                        "Determinant."
+                    ],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "Let $S = \\{ (1, 0, 0), (0, 1, 0), (0, 0, 1) \\}$ be a basis for $\\mathbb{R}^3$. This basis is known as the:",
+                    options: [
+                        "Orthogonal basis.",
+                        "Standard basis.",
+                        "Non-trivial basis.",
+                        "Eigenbasis."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "If $\\lambda$ is an eigenvalue of a matrix $A$, then for some non-zero vector $\\mathbf{v}$, we have $A\\mathbf{v} = \\lambda \\mathbf{v}$. The vector $\\mathbf{v}$ is called an:",
+                    options: [
+                        "Eigenvector.",
+                        "Null vector.",
+                        "Row vector.",
+                        "Column vector."
+                    ],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "The condition for a matrix $A$ to be orthogonal is:",
+                    options: [
+                        "$A^T = A$",
+                        "$A^T = -A$",
+                        "$A^T A = I$",
+                        "$A^T A = 0$"
+                    ],
+                    correctAnswer: 2,
+                    points: 1
+                }
+            ]
+        };
+
+        // --- Global Variables ---
+        let timer = quizData.duration * 60;
+        let countdownInterval;
+        let studentName = "";
+        let mobileNumber = "";
+        let currentQuestionIndex = 0;
+        let studentAnswers = new Array(quizData.questions.length).fill(null);
+        let finalScore = 0;
+        let timeTaken = 0;
+        const totalPossibleScore = quizData.questions.reduce((sum, q) => sum + q.points, 0);
+
+        // --- Utility Functions ---
+
+        /**
+         * Displays a temporary message in the message box.
+         * @param {string} message The message to display.
+         * @param {number} duration The duration in milliseconds to show the message.
+         */
+        function showMessage(message, duration = 3000) {
+            const messageBox = document.getElementById("message-box");
+            const messageText = document.getElementById("message-text");
+            messageText.textContent = message;
+            messageBox.classList.remove("hidden");
+            setTimeout(() => {
+                messageBox.classList.add("hidden");
+            }, duration);
+        }
+
+        /**
+         * Renders a single quiz question from the hardcoded quizData object.
+         * @param {number} index The index of the question to render.
+         */
+        function renderQuestion(index) {
+            if (index < 0 || index >= quizData.questions.length) {
+                console.error("Invalid question index.");
+                return;
+            }
+
+            const quizContainer = document.getElementById("quiz-container");
+            const questionCounterElement = document.getElementById("question-counter");
+            const nextButton = document.getElementById("next-button");
+
+            const q = quizData.questions[index];
+            quizContainer.innerHTML = '';
+            
+            const questionElement = document.createElement('div');
+            questionElement.classList.add('p-6', 'bg-gray-50', 'rounded-lg', 'shadow');
+            
+            const questionHtml = `
+                <p class="text-xl font-semibold text-gray-800 mb-4">
+                    <span class="font-bold text-blue-600">Q${index + 1}:</span> 
+                    ${q.question}
+                </p>
+                <div class="space-y-3">
+                    ${q.options.map((option, optionIndex) => `
+                        <label class="block">
+                            <input type="radio" name="current-question" value="${optionIndex}" class="hidden" ${studentAnswers[index] === optionIndex ? 'checked' : ''} />
+                            <span class="option-label text-lg font-medium text-gray-700 block transition-all duration-200 ease-in-out">
+                                ${option}
+                            </span>
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+            questionElement.innerHTML = questionHtml;
+            quizContainer.appendChild(questionElement);
+
+            questionCounterElement.textContent = `Question ${index + 1} of ${quizData.questions.length}`;
+
+            if (index === quizData.questions.length - 1) {
+                nextButton.textContent = "Submit Quiz";
+            } else {
+                nextButton.textContent = "Next Question";
+            }
+
+            if (window.MathJax) {
+                window.MathJax.typesetPromise([quizContainer]);
+            }
+        }
+
+        /**
+         * Starts the quiz timer.
+         */
+        function startTimer() {
+            const timerElement = document.getElementById("timer");
+            countdownInterval = setInterval(() => {
+                const minutes = Math.floor(timer / 60);
+                const seconds = timer % 60;
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timer > 0) {
+                    timer--;
+                } else {
+                    clearInterval(countdownInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        /**
+         * Saves the current question's answer and moves to the next question.
+         */
+        function nextQuestion() {
+            const selectedOption = document.querySelector('input[name="current-question"]:checked');
+            if (selectedOption) {
+                const selectedIndex = parseInt(selectedOption.value, 10);
+                studentAnswers[currentQuestionIndex] = selectedIndex;
+            }
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.questions.length) {
+                renderQuestion(currentQuestionIndex);
+            } else {
+                submitQuiz();
+            }
+        }
+
+        /**
+         * Calculates the final score and displays the results.
+         */
+        function submitQuiz() {
+            clearInterval(countdownInterval);
+            let score = 0;
+            quizData.questions.forEach((q, index) => {
+                if (studentAnswers[index] === q.correctAnswer) {
+                    score += q.points;
+                }
+            });
+
+            finalScore = score;
+            timeTaken = quizData.duration * 60 - timer;
+
+            const finalStudentNameElement = document.getElementById("final-student-name");
+            const finalMobileNumberElement = document.getElementById("final-mobile-number");
+            const finalScoreElement = document.getElementById("final-score");
+            const timeTakenElement = document.getElementById("time-taken");
+            const quizSection = document.getElementById("quiz-section");
+            const resultsSection = document.getElementById("results-section");
+
+            finalStudentNameElement.textContent = studentName;
+            finalMobileNumberElement.textContent = mobileNumber;
+            finalScoreElement.textContent = `${finalScore} / ${totalPossibleScore}`;
+
+            const minutesTaken = Math.floor(timeTaken / 60);
+            const secondsTaken = timeTaken % 60;
+            timeTakenElement.textContent = `Time taken: ${minutesTaken} min ${secondsTaken} sec`;
+
+            quizSection.classList.add("hidden");
+            resultsSection.classList.remove("hidden");
+        }
+
+        /**
+         * Generates and downloads a PDF scorecard using jsPDF's html method.
+         */
+        function generateAndDownloadPDF() {
+            window.jsPDF = window.jspdf.jsPDF;
+            const pdf = new jsPDF('p', 'pt', 'a4'); // Use 'pt' unit for better control
+
+            // Create the HTML content with inline styles
+            const pdfContentHTML = `
+                <div style="font-family: 'Inter', sans-serif; padding: 40px; text-align: center; width: 100%;">
+                    <h1 style="font-size: 32px; font-weight: 800; color: white; background-image: linear-gradient(to right, #4c1d95, #3b0764); padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 24px;">
+                        WBSLST 2025 Mock Test Portal
+                    </h1>
+                    <div style="background-color: #4c1d95; padding: 24px; border: 2px solid #5a2e9e; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);">
+                        <h2 style="font-size: 28px; font-weight: 700; color: white; margin-bottom: 16px; text-align: center;">Scorecard</h2>
+                        <div style="display: flex; flex-direction: column; gap: 16px; text-align: left;">
+                            <p style="font-size: 18px; font-weight: 500; color: white;">Name: <span style="font-weight: 700;">${studentName}</span></p>
+                            <p style="font-size: 18px; font-weight: 500; color: white;">Mobile Number: <span style="font-weight: 700;">${mobileNumber}</span></p>
+                            <p style="font-size: 24px; font-weight: 600; color: white;">Total Score: <span style="font-weight: 800; color: rgb(250, 204, 21);">${finalScore} / ${totalPossibleScore}</span></p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 32px; text-align: center; color: #6b7280; font-style: italic;">
+                        <p style="font-size: 16px;">Best wishes for your future endeavors!</p>
+                    </div>
+                </div>
+            `;
+            
+            pdf.html(pdfContentHTML, {
+                callback: function (pdf) {
+                    pdf.save(`WBSLST_Scorecard_${studentName}.pdf`);
+                },
+                x: 10,
+                y: 10,
+                width: 570, // Set the width to a reasonable value for A4
+                windowWidth: 700 // Set the virtual window width for rendering
+            });
+        }
+
+        /**
+         * Resets the quiz and returns to the main dashboard.
+         */
+        function resetQuizAndReturn() {
+            const mainDashboardSection = document.getElementById("main-dashboard-section");
+            const quizFlowContainer = document.getElementById("quiz-flow-container");
+            const quizContainer = document.getElementById("quiz-container");
+            const studentForm = document.getElementById("student-form");
+            const resultsSection = document.getElementById("results-section");
+            const quizSection = document.getElementById("quiz-section");
+            const studentFormSection = document.getElementById("student-form-section");
+
+            clearInterval(countdownInterval);
+            timer = quizData.duration * 60;
+            quizContainer.innerHTML = '';
+            studentForm.reset();
+            currentQuestionIndex = 0;
+            studentAnswers = new Array(quizData.questions.length).fill(null);
+
+            quizFlowContainer.classList.add("hidden");
+            mainDashboardSection.classList.remove("hidden");
+
+            resultsSection.classList.add("hidden");
+            quizSection.classList.add("hidden");
+            studentFormSection.classList.remove("hidden");
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Elements ---
+            const mainDashboardSection = document.getElementById("main-dashboard-section");
+            const quizFlowContainer = document.getElementById("quiz-flow-container");
+            const studentFormSection = document.getElementById("student-form-section");
+            const studentForm = document.getElementById("student-form");
+            const quizSection = document.getElementById("quiz-section");
+            const nextButton = document.getElementById("next-button");
+            const restartButton = document.getElementById("restart-button");
+            const startTestButton = document.getElementById('start-test-button');
+            const backToHomeButton = document.getElementById("back-to-home");
+            const downloadPdfButton = document.getElementById("download-pdf-button");
+
+            // --- Event Listeners ---
+
+            // Handle click on the main "Start Free Mock Test" button
+            startTestButton.addEventListener('click', () => {
+                console.log("Start Test button clicked.");
+                mainDashboardSection.classList.add("hidden");
+                quizFlowContainer.classList.remove("hidden");
+            });
+
+            // Handle student form submission (inside the quiz flow)
+            studentForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                studentName = document.getElementById("studentName").value.trim();
+                mobileNumber = document.getElementById("mobileNumber").value.trim();
+
+                if (studentName && mobileNumber.length === 10 && !isNaN(mobileNumber)) {
+                    studentFormSection.classList.add("hidden");
+                    quizSection.classList.remove("hidden");
+
+                    currentQuestionIndex = 0;
+                    studentAnswers = new Array(quizData.questions.length).fill(null);
+                    renderQuestion(currentQuestionIndex);
+                    startTimer();
+                } else {
+                    showMessage("Please enter your name and a valid 10-digit mobile number to start the quiz.");
+                }
+            });
+
+            // Handle next/submit button click
+            nextButton.addEventListener("click", () => {
+                nextQuestion();
+            });
+
+            // Handle the "Try Again" button on the results screen
+            restartButton.addEventListener("click", () => {
+                timer = quizData.duration * 60;
+                currentQuestionIndex = 0;
+                studentAnswers = new Array(quizData.questions.length).fill(null);
+                
+                document.getElementById("results-section").classList.add("hidden");
+                document.getElementById("student-form-section").classList.remove("hidden");
+            });
+
+            // Handle the "Download Scorecard" button
+            downloadPdfButton.addEventListener("click", () => {
+                generateAndDownloadPDF();
+            });
+
+            // Handle the "Back" button to return to the dashboard
+            backToHomeButton.addEventListener("click", () => {
+                resetQuizAndReturn();
+            });
+        });
+    </script>
+</body>
+</html>
