@@ -14,7 +14,7 @@
     <script>
         window.MathJax = {
             tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']]
+                inlineMath: [['$', '$'], ['\KATEX_INLINE_OPEN', '\KATEX_INLINE_CLOSE']]
             },
             svg: {
                 fontCache: 'global'
@@ -50,37 +50,90 @@
             vertical-align: middle;
             font-size: 1.125rem; /* Matches text-lg from Tailwind */
         }
-        /* Add button hover effect */
-        .btn-primary:hover {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1-2px rgba(0, 0, 0, 0.06);
-            transform: translateY(-2px);
-            transition: all 0.2s ease-in-out;
+        /* Premium button styles */
+        .btn-premium {
+            background: linear-gradient(135deg, #4c1d95, #3b0764); /* Deep purple gradient */
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px; /* Fully rounded */
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+        .btn-premium:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px) scale(1.05);
+        }
+        .btn-premium:active {
+            transform: translateY(0) scale(1);
         }
         /* Style for the answer options */
         .option-label {
             cursor: pointer;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            border-width: 2px;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            border-width: 1px;
             border-color: #e2e8f0; /* Default border color */
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
         .option-label:hover {
-            background-color: #f7fafc; /* Lighter background on hover */
+            background-color: #f9fafb; /* Subtle hover */
             border-color: #cbd5e0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         input[type="radio"]:checked + .option-label {
-            background-color: #bfdbfe; /* Light blue when checked */
-            border-color: #3b82f6; /* Blue border when checked */
+            background-color: #eef2ff; /* Light indigo when checked */
+            border-color: #6366f1; /* Indigo border */
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
         }
+        /* Hero background with premium gradient */
         .hero-bg {
-            background-image: linear-gradient(to right, #4c1d95, #3b0764); /* Deep purple gradient */
+            background: linear-gradient(135deg, #4c1d95 0%, #3b0764 100%); /* Deep purple gradient */
+            position: relative;
+            overflow: hidden;
         }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            opacity: 0.5;
+        }
+        /* Testimonial background with premium dark theme */
         .testimonial-bg {
-            background-color: #1f2937; /* Dark gray for testimonials */
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%); /* Dark gray gradient */
         }
         .testimonial-card {
-            background-color: #374151; /* Slightly lighter gray for testimonial card */
+            background: linear-gradient(135deg, #374151 0%, #1f2937 100%); /* Premium card gradient */
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+        }
+        /* About Us premium styling */
+        .about-bg {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+        }
+        /* Fade-in animation */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        /* Quiz container premium shadow */
+        #quiz-flow-container .bg-white {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-radius: 1.5rem;
         }
     </style>
 </head>
@@ -89,31 +142,37 @@
     <!-- Main Dashboard Section -->
     <div id="main-dashboard-section" class="min-h-screen hero-bg text-white flex flex-col items-center">
         <!-- Hero Section -->
-        <div class="text-center max-w-4xl w-full py-20 px-4 md:px-8">
-            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in-down">WBSLST 2025</h1>
-            <p class="text-xl md:text-2xl text-gray-300 font-light mb-8 animate-fade-in-up">
-                Practice with our free mock tests to prepare for your Math exam.
+        <div class="text-center max-w-4xl w-full py-20 px-4 md:px-8 relative z-10">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in-up">WBSLST 2025</h1>
+            <p class="text-xl md:text-2xl text-gray-200 font-light mb-8 animate-fade-in-up" style="animation-delay: 0.2s;">
+                Elevate your preparation with premium mock tests for Math excellence.
             </p>
-            <button id="start-test-button" class="bg-blue-500 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300 btn-primary">
-                Start Free Mock Test
+            <button id="start-test-button" class="btn-premium">
+                Begin Premium Mock Test
             </button>
         </div>
 
         <!-- About Us Section (Updated) -->
-        <div id="about-us-section" class="bg-slate-800 py-16 md:py-24 px-4 md:px-8 w-full text-white">
+        <div id="about-us-section" class="about-bg py-16 md:py-24 px-4 md:px-8 w-full text-gray-800">
             <div class="max-w-4xl mx-auto text-center">
                 <div class="flex justify-center mb-6">
-                    <!-- SVG for a graduation cap -->
-                    <svg class="w-16 h-16 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <!-- Premium SVG for a graduation cap with gradient -->
+                    <svg class="w-16 h-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="url(#grad)">
+                        <defs>
+                            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#4c1d95;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#3b0764;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
                         <path d="M21.5 8.01L12 3.51L2.5 8.01L12 12.51L21.5 8.01ZM21.5 10.01L12 14.51L2.5 10.01V12.01L12 16.51L21.5 12.01V10.01ZM21.5 14.01L12 18.51L2.5 14.01V16.01L12 20.51L21.5 16.01V14.01Z"></path>
                     </svg>
                 </div>
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">About Our Portal</h2>
-                <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-4">
-                    Welcome to the Advanced Math Mock Test Portal, your one-stop solution for comprehensive exam preparation. Our platform is designed to help students master various mathematical concepts through a wide range of mock tests tailored for specific competitive exams.
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 animate-fade-in-up">Discover Our Premium Portal</h2>
+                <p class="text-lg md:text-xl text-gray-600 leading-relaxed mb-4 animate-fade-in-up" style="animation-delay: 0.1s;">
+                    Experience elite preparation with our advanced Math Mock Test Portal, crafted for top-tier competitive exam success.
                 </p>
-                <p class="text-lg md:text-xl text-gray-300 leading-relaxed">
-                    We provide a structured learning experience with carefully curated practice tests, helping you to identify your strengths and weaknesses. Dive into our extensive library of questions and prepare yourself to ace your exams with confidence!
+                <p class="text-lg md:text-xl text-gray-600 leading-relaxed animate-fade-in-up" style="animation-delay: 0.2s;">
+                    Unlock structured, high-quality mock tests designed to refine your skills and boost confidence for exceptional results.
                 </p>
             </div>
         </div>
@@ -121,12 +180,12 @@
         <!-- Testimonials Section -->
         <div id="testimonials-section" class="testimonial-bg text-white py-16 md:py-24 px-4 md:px-8 w-full">
             <div class="max-w-5xl mx-auto">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">What Our Students Say</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 animate-fade-in-up">Voices of Success</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
                     <!-- Testimonial Card 1 -->
-                    <div class="testimonial-card p-6 rounded-xl shadow-xl flex flex-col h-full">
+                    <div class="testimonial-card p-6 flex flex-col h-full">
                         <p class="text-lg text-gray-300 italic mb-4">
-                            "The mock tests here are top-notch and a real confidence booster. I feel much more prepared for the SLST exam."
+                            "The premium mock tests elevated my preparation to new heights. Truly transformative!"
                         </p>
                         <div class="mt-auto">
                             <p class="font-semibold text-white">Ananya Majumdar</p>
@@ -134,9 +193,9 @@
                         </div>
                     </div>
                     <!-- Testimonial Card 2 -->
-                    <div class="testimonial-card p-6 rounded-xl shadow-xl flex flex-col h-full">
+                    <div class="testimonial-card p-6 flex flex-col h-full">
                         <p class="text-lg text-gray-300 italic mb-4">
-                            "The questions are very relevant to the syllabus. This platform has been instrumental in my revision strategy."
+                            "Elite questions aligned perfectly with the syllabus. A game-changer for my strategy."
                         </p>
                         <div class="mt-auto">
                             <p class="font-semibold text-white">Somnath Ghosh</p>
@@ -144,9 +203,9 @@
                         </div>
                     </div>
                     <!-- Testimonial Card 3 -->
-                    <div class="testimonial-card p-6 rounded-xl shadow-xl flex flex-col h-full">
+                    <div class="testimonial-card p-6 flex flex-col h-full">
                         <p class="text-lg text-gray-300 italic mb-4">
-                            "I love the one-by-one question format. It helps me focus on each problem without feeling overwhelmed. Highly recommended!"
+                            "The focused, one-by-one format is premium and stress-free. Exceptional platform!"
                         </p>
                         <div class="mt-auto">
                             <p class="font-semibold text-white">Priya Roy</p>
@@ -154,9 +213,9 @@
                         </div>
                     </div>
                     <!-- Testimonial Card 4 -->
-                    <div class="testimonial-card p-6 rounded-xl shadow-xl flex flex-col h-full">
+                    <div class="testimonial-card p-6 flex flex-col h-full">
                         <p class="text-lg text-gray-300 italic mb-4">
-                            "This website has significantly improved my speed and accuracy. The detailed questions are exactly what I needed for my preparation."
+                            "Significantly enhanced my precision. Premium quality for serious aspirants."
                         </p>
                         <div class="mt-auto">
                             <p class="font-semibold text-white">Arindam Das</p>
@@ -194,7 +253,7 @@
                         <label for="mobileNumber" class="block text-sm font-medium text-gray-700">Mobile Number</label>
                         <input type="tel" id="mobileNumber" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2" placeholder="10-digit number" required pattern="[0-9]{10}" maxlength="10">
                     </div>
-                    <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-lg btn-primary">Start Quiz</button>
+                    <button type="submit" class="w-full btn-premium">Start Quiz</button>
                 </form>
             </div>
 
@@ -209,7 +268,7 @@
                 </div>
                 <div class="mt-8 flex justify-between">
                     <p id="question-counter" class="text-gray-500 text-sm font-medium"></p>
-                    <button id="next-button" class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-md shadow-lg btn-primary">Next Question</button>
+                    <button id="next-button" class="btn-premium">Next Question</button>
                 </div>
             </div>
 
@@ -222,8 +281,8 @@
                     <p class="text-2xl font-semibold text-gray-800">Total Score: <span id="final-score" class="text-blue-600 font-extrabold text-4xl"></span></p>
                     <p id="time-taken" class="text-sm text-gray-500"></p>
                 </div>
-                <button id="restart-button" class="mt-8 bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-lg btn-primary">Try Again</button>
-                <button id="download-pdf-button" class="mt-4 bg-green-600 text-white font-semibold py-2 px-4 rounded-md shadow-lg btn-primary">Download Scorecard</button>
+                <button id="restart-button" class="mt-8 btn-premium">Try Again</button>
+                <button id="download-pdf-button" class="mt-4 btn-premium">Download Scorecard</button>
             </div>
         </div>
     </div>
