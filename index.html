@@ -291,249 +291,304 @@
         // --- Hardcoded Quiz Data ---
         const quizData = {
             duration: 30, // Test duration in minutes
- questions = [
-    {
-        question: "What is the magnitude of the vector $\\vec{a} = 3\\hat{i} + 4\\hat{j}$?",
-        options: ["$5$", "$7$", "$1$", "$25$"],
-        correctAnswer: 0,
-        points: 1
-    },
-    {
-        question: "If $\\vec{a} = 2\\hat{i} - \\hat{j}$ and $\\vec{b} = \\hat{i} + 3\\hat{j}$, what is $\\vec{a} \\cdot \\vec{b}$?",
-        options: ["$5$", "$-1$", "$-3$", "$1$"],
-        correctAnswer: 1,
-        points: 1
-    },
-    {
-        question: "What is the angle between vectors $\\vec{a} = \\hat{i}$ and $\\vec{b} = \\hat{j}$?",
-        options: ["$0^\\circ$", "$45^\\circ$", "$90^\\circ$", "$180^\\circ$"],
-        correctAnswer: 2,
-        points: 1
-    },
-    {
-        question: "What is the unit vector in the direction of $\\vec{a} = 6\\hat{i} - 8\\hat{j}$?",
-        options: [
-            "$\\frac{3\\hat{i} - 4\\hat{j}}{5}$",
-            "$\\frac{6\\hat{i} - 8\\hat{j}}{10}$",
-            "$\\frac{6\\hat{i} - 8\\hat{j}}{100}$",
-            "$\\frac{6\\hat{i} + 8\\hat{j}}{10}$"
-        ],
-        correctAnswer: 1,
-        points: 1
-    },
-    {
-        question: "The vector $\\vec{a} = 2\\hat{i} + 3\\hat{j}$ is perpendicular to which of the following?",
-        options: [
-            "$3\\hat{i} - 2\\hat{j}$",
-            "$\\hat{i} + \\hat{j}$",
-            "$-3\\hat{i} + 2\\hat{j}$",
-            "$2\\hat{i} + 3\\hat{j}$"
-        ],
-        correctAnswer: 2,
-        points: 1
-    },
-    {
-        question: "If $\\vec{a} = \\hat{i} + 2\\hat{j}$ and $\\vec{b} = 3\\hat{i} + 4\\hat{j}$, then $\\vec{a} + \\vec{b} = $",
-        options: [
-            "$4\\hat{i} + 6\\hat{j}$",
-            "$2\\hat{i} + 2\\hat{j}$",
-            "$3\\hat{i} + 6\\hat{j}$",
-            "$4\\hat{i} + 2\\hat{j}$"
-        ],
-        correctAnswer: 0,
-        points: 1
-    },
-    {
-        question: "If $\\vec{a} \\cdot \\vec{b} = 0$ and neither $\\vec{a}$ nor $\\vec{b}$ is zero, then the angle between them is:",
-        options: [
-            "$0^\\circ$",
-            "$90^\\circ$",
-            "$180^\\circ$",
-            "$45^\\circ$"
-        ],
-        correctAnswer: 1,
-        points: 1
-    },
-    {
-        question: "Find the scalar projection of $\\vec{a} = 3\\hat{i} + 4\\hat{j}$ on $\\vec{b} = \\hat{i}$.",
-        options: ["$3$", "$4$", "$5$", "$7$"],
-        correctAnswer: 0,
-        points: 1
-    },
-    {
-        question: "What is $\\vec{a} \\cdot \\vec{a}$ if $\\vec{a} = 2\\hat{i} - 5\\hat{j}$?",
-        options: ["$25$", "$29$", "$-29$", "$-25$"],
-        correctAnswer: 1,
-        points: 1
-    },
-    {
-        question: "What is the area of the parallelogram formed by vectors $\\vec{a} = \\hat{i}$ and $\\vec{b} = \\hat{i} + \\hat{j}$?",
-        options: ["$0$", "$1$", "$\\sqrt{2}$", "$2$"],
-        correctAnswer: 1,
-        points: 1
-    },
-    {
-        question: "If $|\\vec{a}| = 3$ and $|\\vec{b}| = 4$ and angle between them is $90^\\circ$, what is $|\\vec{a} + \\vec{b}|$?",
-        options: ["$5$", "$7$", "$25$", "$1$"],
-        correctAnswer: 0,
-        points: 1
-    },
-    {
-        question: "The cross product of two parallel vectors is:",
-        options: ["$0$", "Magnitude of both", "Sum of vectors", "None"],
-        correctAnswer: 0,
-        points: 1
-    },
-    {
-        question: "Which of the following is not a vector quantity?",
-        options: ["Displacement", "Velocity", "Acceleration", "Speed"],
-        correctAnswer: 3,
-        points: 1
-    },
-    {
-        question: "Two vectors are equal if:",
-        options: [
-            "They have same magnitude",
-            "They have same direction",
-            "Same magnitude and direction",
-            "None"
-        ],
-        correctAnswer: 2,
-        points: 1
-    },
-    {
-        question: "If $\\vec{a} = \\hat{i} + \\hat{j}$ and $\\vec{b} = \\hat{i} - \\hat{j}$, then $\\vec{a} \\cdot \\vec{b}$ is:",
-        options: ["$0$", "$2$", "$-2$", "$1$"],
-        correctAnswer: 0,
-        points: 1
-    },
-    {
-        question: "Which of the following vectors is a unit vector?",
-        options: [
-            "$3\\hat{i}$",
-            "$\\frac{1}{\\sqrt{2}}(\\hat{i} + \\hat{j})$",
-            "$2\\hat{i} + 2\\hat{j}$",
-            "$\\hat{i} + \\hat{j}$"
-        ],
-        correctAnswer: 1,
-        points: 1
-    },
-    {
-        question: "Dot product is maximum when angle between vectors is:",
-        options: [
-            "$0^\\circ$",
-            "$90^\\circ$",
-            "$180^\\circ$",
-            "$45^\\circ$"
-        ],
-        correctAnswer: 0,
-        points: 1
-    },
-    {
-        question: "The result of cross product is a:",
-        options: ["Scalar", "Vector", "Matrix", "Angle"],
-        correctAnswer: 1,
-        points: 1
-    },
-    {
-        question: "If $\\vec{a} = 2\\hat{i} - 3\\hat{j}$, then $-2\\vec{a}$ is:",
-        options: [
-            "$-4\\hat{i} + 6\\hat{j}$",
-            "$4\\hat{i} + 6\\hat{j}$",
-            "$4\\hat{i} - 6\\hat{j}$",
-            "$-4\\hat{i} - 6\\hat{j}$"
-        ],
-        correctAnswer: 0,
-        points: 1
-    },
-    {
-        question: "Which operation is not defined for vectors?",
-        options: ["Addition", "Dot product", "Division", "Scalar multiplication"],
-        correctAnswer: 2,
-        points: 1
-    },
-    {
-        question: "The vector $\\vec{r} = x\\hat{i} + y\\hat{j}$ represents:",
-        options: ["Scalar", "Position vector", "Area", "Force"],
-        correctAnswer: 1,
-        points: 1
-    },
-    {
-        question: "The magnitude of zero vector is:",
-        options: ["$0$", "$1$", "Infinite", "Undefined"],
-        correctAnswer: 0,
-        points: 1
-    },
-    {
-        question: "Which vector is perpendicular to both $\\hat{i}$ and $\\hat{j}$?",
-        options: ["$\\hat{k}$", "$\\hat{i}$", "$\\hat{j}$", "$-\\hat{i} - \\hat{j}$"],
-        correctAnswer: 0,
-        points: 1
-    },
-    {
-        question: "The angle between vector $\\vec{a}$ and itself is:",
-        options: ["$0^\\circ$", "$90^\\circ$", "$180^\\circ$", "$360^\\circ$"],
-        correctAnswer: 0,
-        points: 1
-    },
-    {
-        question: "Which vector is orthogonal to $\\vec{a} = 2\\hat{i} + 3\\hat{j}$?",
-        options: [
-            "$3\\hat{i} - 2\\hat{j}$",
-            "$-3\\hat{i} + 2\\hat{j}$",
-            "$\\hat{i} + \\hat{j}$",
-            "$2\\hat{i} + 3\\hat{j}$"
-        ],
-        correctAnswer: 1,
-        points: 1
-    },
-    {
-        question: "The sum of a vector and its negative is:",
-        options: ["Zero vector", "Unit vector", "Infinite vector", "None"],
-        correctAnswer: 0,
-        points: 1
-    },
-    {
-        question: "Which is true for dot product?",
-        options: [
-            "$\\vec{a} \\cdot \\vec{b} = \\vec{b} \\cdot \\vec{a}$",
-            "$\\vec{a} \\cdot \\vec{b} \\neq \\vec{b} \\cdot \\vec{a}$",
-            "Always zero",
-            "Always one"
-        ],
-        correctAnswer: 0,
-        points: 1
-    },
-    {
-        question: "Which one is not a valid vector operation?",
-        options: [
-            "Subtraction of vectors",
-            "Dot product of vectors",
-            "Cross product of vectors",
-            "Square of a vector"
-        ],
-        correctAnswer: 3,
-        points: 1
-    },
-    {
-        question: "The direction cosines of a unit vector are:",
-        options: ["Always positive", "Always zero", "Squares add to 1", "Add to 1"],
-        correctAnswer: 2,
-        points: 1
-    },
-    {
-        question: "If $\\vec{a}$ and $\\vec{b}$ are two vectors, then $|\\vec{a} + \\vec{b}|^2$ equals:",
-        options: [
-            "$|\\vec{a}|^2 + |\\vec{b}|^2$",
-            "$|\\vec{a}|^2 + |\\vec{b}|^2 + 2\\vec{a} \\cdot \\vec{b}$",
-            "$|\\vec{a}| + |\\vec{b}|$",
-            "$2\\vec{a} \\cdot \\vec{b}$"
-        ],
-        correctAnswer: 1,
-        points: 1
-    }
-];
-
+            questions: [
+                {
+                    question: "Let $V$ be a vector space over a field $F$. A subset $S \\subset V$ is a subspace if and only if:",
+                    options: [
+                        "$S$ is non-empty and for any vectors $\\mathbf{u}, \\mathbf{v} \\in S$ and scalars $c, d \\in F$, the linear combination $c\\mathbf{u} + d\\mathbf{v}$ is in $S$.",
+                        "$S$ contains the zero vector and is closed under vector addition.",
+                        "$S$ is non-empty and for any vector $\\mathbf{u} \\in S$ and scalar $c \\in F$, the product $c\\mathbf{u}$ is in $S$.",
+                        "$S$ is a subset of $V$."
+                    ],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "What is the determinant of the matrix $\\begin{pmatrix} 2 & 3 \\\\ 4 & 5 \\end{pmatrix}$?",
+                    options: ["$2$", "$-2$", "$22$", "$-22$"],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "A linear transformation $T: V \\to W$ is an isomorphism if it is:",
+                    options: [
+                        "Surjective and its kernel is non-trivial.",
+                        "Injective and its image is not equal to $W$.",
+                        "Both injective and surjective.",
+                        "Bijective but not a homomorphism."
+                    ],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "The set of all polynomials of degree at most 3 with real coefficients, denoted by $P_3(\\mathbb{R})$, forms a vector space. What is its dimension?",
+                    options: ["$2$", "$3$", "$4$", "$5$"],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "Which of the following sets is a basis for $\\mathbb{R}^2$?",
+                    options: [
+                        "$\\{ (1, 0), (2, 0) \\}$",
+                        "$\\{ (1, 1), (2, 2) \\}$",
+                        "$\\{ (1, 0), (0, 1) \\}$",
+                        "$\\{ (0, 0), (1, 1) \\}$"
+                    ],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "What is the rank of the matrix $\\begin{pmatrix} 1 & 2 & 3 \\\\ 2 & 4 & 6 \\\\ 3 & 6 & 9 \\end{pmatrix}$?",
+                    options: ["$0$", "$1$", "$2$", "$3$"],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "Let $T: \\mathbb{R}^2 \\to \\mathbb{R}^2$ be a linear transformation defined by $T(x, y) = (x+y, x-y)$. The matrix representation of $T$ with respect to the standard basis is:",
+                    options: [
+                        "$\\begin{pmatrix} 1 & 1 \\\\ 1 & -1 \\end{pmatrix}$",
+                        "$\\begin{pmatrix} 1 & 1 \\\\ -1 & 1 \\end{pmatrix}$",
+                        "$\\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\end{pmatrix}$",
+                        "$\\begin{pmatrix} 1 & -1 \\\\ 1 & 1 \\end{pmatrix}$"
+                    ],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "Let $A$ be a $3 \\times 3$ matrix with eigenvalues $\\lambda_1=1, \\lambda_2=2, \\lambda_3=3$. What is the trace of $A$?",
+                    options: ["$1$", "$2$", "$3$", "$6$"],
+                    correctAnswer: 3,
+                    points: 1
+                },
+                {
+                    question: "For a square matrix $A$, if $\\det(A) = 0$, then $A$ is:",
+                    options: [
+                        "Invertible.",
+                        "Singular.",
+                        "Orthogonal.",
+                        "Diagonalizable."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "The null space (or kernel) of a linear transformation $T$ is the set of all vectors $\\mathbf{v}$ such that:",
+                    options: [
+                        "$T(\\mathbf{v}) \\ne 0$",
+                        "$T(\\mathbf{v}) = \\mathbf{0}$",
+                        "$\\mathbf{v} = \\mathbf{0}$",
+                        "$T(\\mathbf{v})$ is in the image of $T$."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "What is the value of $i$ in the complex numbers, where $i^2 = -1$?",
+                    options: ["$i$", "$1$", "$-1$", "$\\sqrt{-1}$"],
+                    correctAnswer: 3,
+                    points: 1
+                },
+                {
+                    question: "A set of vectors $\\{ \\mathbf{v}_1, \\mathbf{v}_2, \\dots, \\mathbf{v}_n \\}$ is linearly independent if the only solution to the equation $c_1\\mathbf{v}_1 + c_2\\mathbf{v}_2 + \\dots + c_n\\mathbf{v}_n = \\mathbf{0}$ is:",
+                    options: [
+                        "$c_1=c_2=\\dots=c_n=1$",
+                        "$c_1=c_2=\\dots=c_n=0$",
+                        "The vectors are orthogonal.",
+                        "The vectors form a basis."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "Which of the following is an eigenvector of the matrix $\\begin{pmatrix} 2 & 0 \\\\ 0 & 3 \\end{pmatrix}$ with eigenvalue 2?",
+                    options: ["$(1, 0)$", "$(0, 1)$", "$(1, 1)$", "$(2, 3)$"],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "The dimension of the row space of a matrix is equal to its:",
+                    options: [
+                        "Nullity.",
+                        "Column space dimension.",
+                        "Determinant.",
+                        "Trace."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "The characteristic polynomial of a matrix $A$ is given by $p(\\lambda) = \\det(A - \\lambda I)$. The roots of this polynomial are the:",
+                    options: [
+                        "Determinants of submatrices.",
+                        "Traces of $A$.",
+                        "Eigenvalues of $A$.",
+                        "Ranks of $A$."
+                    ],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "If $T: V \\to W$ is a linear transformation, then the dimension of the image of $T$ is called the:",
+                    options: [
+                        "Rank of $T$.",
+                        "Nullity of $T$.",
+                        "Trace of $T$.",
+                        "Determinant of $T$."
+                    ],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "Which of the following is not a property of an inner product space?",
+                    options: [
+                        "Commutativity: $\\langle u, v \\rangle = \\langle v, u \\rangle$",
+                        "Linearity in the first argument: $\\langle au+bv, w \\rangle = a\\langle u, w \\rangle + b\\langle v, w \\rangle$",
+                        "Positive-definiteness: $\\langle v, v \\rangle \\ge 0$ and $\\langle v, v \\rangle = 0$ if and only if $v = 0$.",
+                        "Distributivity: $\\langle u, v+w \\rangle = \\langle u, v \\rangle + \\langle u, w \\rangle$"
+                    ],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "The Gram-Schmidt process is used to:",
+                    options: [
+                        "Find the determinant of a matrix.",
+                        "Construct an orthogonal basis from a given basis.",
+                        "Solve a system of linear equations.",
+                        "Find the eigenvalues of a matrix."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "The geometric multiplicity of an eigenvalue $\\lambda$ is the dimension of the corresponding:",
+                    options: [
+                        "Eigenspace.",
+                        "Null space.",
+                        "Row space.",
+                        "Column space."
+                    ],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "A matrix $A$ is diagonalizable if and only if for every eigenvalue $\\lambda$, its algebraic multiplicity equals its:",
+                    options: [
+                        "Trace.",
+                        "Rank.",
+                        "Geometric multiplicity.",
+                        "Determinant."
+                    ],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "The identity matrix $I$ is a special case of a:",
+                    options: [
+                        "Symmetric matrix.",
+                        "Diagonal matrix.",
+                        "Singular matrix.",
+                        "Upper triangular matrix."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "The transpose of a matrix $A$, denoted by $A^T$, is obtained by:",
+                    options: [
+                        "Interchanging its rows and columns.",
+                        "Multiplying all elements by -1.",
+                        "Taking the determinant.",
+                        "Swapping the main diagonal elements."
+                    ],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "For a linear system of equations $A\\mathbf{x} = \\mathbf{b}$, a unique solution exists if and only if:",
+                    options: [
+                        "$A$ is a square matrix.",
+                        "$\\det(A) = 0$.",
+                        "$A$ is invertible.",
+                        "The system is homogeneous."
+                    ],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "The set of all $2 \\times 2$ matrices with real entries forms a vector space. What is its dimension?",
+                    options: ["$2$", "$3$", "$4$", "$5$"],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "The inverse of a $2 \\times 2$ matrix $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$ is $\\frac{1}{ad-bc} \\begin{pmatrix} d & -b \\\\ -c & a \\end{pmatrix}$. This inverse exists only if:",
+                    options: [
+                        "$a+d \\ne 0$",
+                        "$ad-bc \\ne 0$",
+                        "$a-d \\ne 0$",
+                        "$ad+bc \\ne 0$"
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "A set of vectors that are all mutually orthogonal and have a norm of 1 is called an:",
+                    options: [
+                        "Orthogonal basis.",
+                        "Orthonormal basis.",
+                        "Linear combination.",
+                        "Eigenbasis."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "The characteristic equation of a matrix $A$ is used to find its:",
+                    options: [
+                        "Inverse.",
+                        "Rank.",
+                        "Eigenvalues.",
+                        "Determinant."
+                    ],
+                    correctAnswer: 2,
+                    points: 1
+                },
+                {
+                    question: "Let $S = \\{ (1, 0, 0), (0, 1, 0), (0, 0, 1) \\}$ be a basis for $\\mathbb{R}^3$. This basis is known as the:",
+                    options: [
+                        "Orthogonal basis.",
+                        "Standard basis.",
+                        "Non-trivial basis.",
+                        "Eigenbasis."
+                    ],
+                    correctAnswer: 1,
+                    points: 1
+                },
+                {
+                    question: "If $\\lambda$ is an eigenvalue of a matrix $A$, then for some non-zero vector $\\mathbf{v}$, we have $A\\mathbf{v} = \\lambda \\mathbf{v}$. The vector $\\mathbf{v}$ is called an:",
+                    options: [
+                        "Eigenvector.",
+                        "Null vector.",
+                        "Row vector.",
+                        "Column vector."
+                    ],
+                    correctAnswer: 0,
+                    points: 1
+                },
+                {
+                    question: "The condition for a matrix $A$ to be orthogonal is:",
+                    options: [
+                        "$A^T = A$",
+                        "$A^T = -A$",
+                        "$A^T A = I$",
+                        "$A^T A = 0$"
+                    ],
+                    correctAnswer: 2,
+                    points: 1
+                }
+            ]
+        };
 
         // --- Global Variables (will be used by multiple functions) ---
         let timer = quizData.duration * 60;
