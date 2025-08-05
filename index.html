@@ -293,300 +293,335 @@
             duration: 30, // Test duration in minutes
             questions: [
                 {
-                    question: "Let $V$ be a vector space over a field $F$. A subset $S \\subset V$ is a subspace if and only if:",
-                    options: [
-                        "$S$ is non-empty and for any vectors $\\mathbf{u}, \\mathbf{v} \\in S$ and scalars $c, d \\in F$, the linear combination $c\\mathbf{u} + d\\mathbf{v}$ is in $S$.",
-                        "$S$ contains the zero vector and is closed under vector addition.",
-                        "$S$ is non-empty and for any vector $\\mathbf{u} \\in S$ and scalar $c \\in F$, the product $c\\mathbf{u}$ is in $S$.",
-                        "$S$ is a subset of $V$."
-                    ],
-                    correctAnswer: 0,
-                    points: 1
-                },
-                {
-                    question: "What is the determinant of the matrix $\\begin{pmatrix} 2 & 3 \\\\ 4 & 5 \\end{pmatrix}$?",
-                    options: ["$2$", "$-2$", "$22$", "$-22$"],
-                    correctAnswer: 1,
-                    points: 1
-                },
-                {
-                    question: "A linear transformation $T: V \\to W$ is an isomorphism if it is:",
-                    options: [
-                        "Surjective and its kernel is non-trivial.",
-                        "Injective and its image is not equal to $W$.",
-                        "Both injective and surjective.",
-                        "Bijective but not a homomorphism."
-                    ],
-                    correctAnswer: 2,
-                    points: 1
-                },
-                {
-                    question: "The set of all polynomials of degree at most 3 with real coefficients, denoted by $P_3(\\mathbb{R})$, forms a vector space. What is its dimension?",
-                    options: ["$2$", "$3$", "$4$", "$5$"],
-                    correctAnswer: 2,
-                    points: 1
-                },
-                {
-                    question: "Which of the following sets is a basis for $\\mathbb{R}^2$?",
-                    options: [
-                        "$\\{ (1, 0), (2, 0) \\}$",
-                        "$\\{ (1, 1), (2, 2) \\}$",
-                        "$\\{ (1, 0), (0, 1) \\}$",
-                        "$\\{ (0, 0), (1, 1) \\}$"
-                    ],
-                    correctAnswer: 2,
-                    points: 1
-                },
-                {
-                    question: "What is the rank of the matrix $\\begin{pmatrix} 1 & 2 & 3 \\\\ 2 & 4 & 6 \\\\ 3 & 6 & 9 \\end{pmatrix}$?",
-                    options: ["$0$", "$1$", "$2$", "$3$"],
-                    correctAnswer: 1,
-                    points: 1
-                },
-                {
-                    question: "Let $T: \\mathbb{R}^2 \\to \\mathbb{R}^2$ be a linear transformation defined by $T(x, y) = (x+y, x-y)$. The matrix representation of $T$ with respect to the standard basis is:",
-                    options: [
-                        "$\\begin{pmatrix} 1 & 1 \\\\ 1 & -1 \\end{pmatrix}$",
-                        "$\\begin{pmatrix} 1 & 1 \\\\ -1 & 1 \\end{pmatrix}$",
-                        "$\\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\end{pmatrix}$",
-                        "$\\begin{pmatrix} 1 & -1 \\\\ 1 & 1 \\end{pmatrix}$"
-                    ],
-                    correctAnswer: 0,
-                    points: 1
-                },
-                {
-                    question: "Let $A$ be a $3 \\times 3$ matrix with eigenvalues $\\lambda_1=1, \\lambda_2=2, \\lambda_3=3$. What is the trace of $A$?",
-                    options: ["$1$", "$2$", "$3$", "$6$"],
-                    correctAnswer: 3,
-                    points: 1
-                },
-                {
-                    question: "For a square matrix $A$, if $\\det(A) = 0$, then $A$ is:",
-                    options: [
-                        "Invertible.",
-                        "Singular.",
-                        "Orthogonal.",
-                        "Diagonalizable."
-                    ],
-                    correctAnswer: 1,
-                    points: 1
-                },
-                {
-                    question: "The null space (or kernel) of a linear transformation $T$ is the set of all vectors $\\mathbf{v}$ such that:",
-                    options: [
-                        "$T(\\mathbf{v}) \\ne 0$",
-                        "$T(\\mathbf{v}) = \\mathbf{0}$",
-                        "$\\mathbf{v} = \\mathbf{0}$",
-                        "$T(\\mathbf{v})$ is in the image of $T$."
-                    ],
-                    correctAnswer: 1,
-                    points: 1
-                },
-                {
-                    question: "What is the value of $i$ in the complex numbers, where $i^2 = -1$?",
-                    options: ["$i$", "$1$", "$-1$", "$\\sqrt{-1}$"],
-                    correctAnswer: 3,
-                    points: 1
-                },
-                {
-                    question: "A set of vectors $\\{ \\mathbf{v}_1, \\mathbf{v}_2, \\dots, \\mathbf{v}_n \\}$ is linearly independent if the only solution to the equation $c_1\\mathbf{v}_1 + c_2\\mathbf{v}_2 + \\dots + c_n\\mathbf{v}_n = \\mathbf{0}$ is:",
-                    options: [
-                        "$c_1=c_2=\\dots=c_n=1$",
-                        "$c_1=c_2=\\dots=c_n=0$",
-                        "The vectors are orthogonal.",
-                        "The vectors form a basis."
-                    ],
-                    correctAnswer: 1,
-                    points: 1
-                },
-                {
-                    question: "Which of the following is an eigenvector of the matrix $\\begin{pmatrix} 2 & 0 \\\\ 0 & 3 \\end{pmatrix}$ with eigenvalue 2?",
-                    options: ["$(1, 0)$", "$(0, 1)$", "$(1, 1)$", "$(2, 3)$"],
-                    correctAnswer: 0,
-                    points: 1
-                },
-                {
-                    question: "The dimension of the row space of a matrix is equal to its:",
-                    options: [
-                        "Nullity.",
-                        "Column space dimension.",
-                        "Determinant.",
-                        "Trace."
-                    ],
-                    correctAnswer: 1,
-                    points: 1
-                },
-                {
-                    question: "The characteristic polynomial of a matrix $A$ is given by $p(\\lambda) = \\det(A - \\lambda I)$. The roots of this polynomial are the:",
-                    options: [
-                        "Determinants of submatrices.",
-                        "Traces of $A$.",
-                        "Eigenvalues of $A$.",
-                        "Ranks of $A$."
-                    ],
-                    correctAnswer: 2,
-                    points: 1
-                },
-                {
-                    question: "If $T: V \\to W$ is a linear transformation, then the dimension of the image of $T$ is called the:",
-                    options: [
-                        "Rank of $T$.",
-                        "Nullity of $T$.",
-                        "Trace of $T$.",
-                        "Determinant of $T$."
-                    ],
-                    correctAnswer: 0,
-                    points: 1
-                },
-                {
-                    question: "Which of the following is not a property of an inner product space?",
-                    options: [
-                        "Commutativity: $\\langle u, v \\rangle = \\langle v, u \\rangle$",
-                        "Linearity in the first argument: $\\langle au+bv, w \\rangle = a\\langle u, w \\rangle + b\\langle v, w \\rangle$",
-                        "Positive-definiteness: $\\langle v, v \\rangle \\ge 0$ and $\\langle v, v \\rangle = 0$ if and only if $v = 0$.",
-                        "Distributivity: $\\langle u, v+w \\rangle = \\langle u, v \\rangle + \\langle u, w \\rangle$"
-                    ],
-                    correctAnswer: 0,
-                    points: 1
-                },
-                {
-                    question: "The Gram-Schmidt process is used to:",
-                    options: [
-                        "Find the determinant of a matrix.",
-                        "Construct an orthogonal basis from a given basis.",
-                        "Solve a system of linear equations.",
-                        "Find the eigenvalues of a matrix."
-                    ],
-                    correctAnswer: 1,
-                    points: 1
-                },
-                {
-                    question: "The geometric multiplicity of an eigenvalue $\\lambda$ is the dimension of the corresponding:",
-                    options: [
-                        "Eigenspace.",
-                        "Null space.",
-                        "Row space.",
-                        "Column space."
-                    ],
-                    correctAnswer: 0,
-                    points: 1
-                },
-                {
-                    question: "A matrix $A$ is diagonalizable if and only if for every eigenvalue $\\lambda$, its algebraic multiplicity equals its:",
-                    options: [
-                        "Trace.",
-                        "Rank.",
-                        "Geometric multiplicity.",
-                        "Determinant."
-                    ],
-                    correctAnswer: 2,
-                    points: 1
-                },
-                {
-                    question: "The identity matrix $I$ is a special case of a:",
-                    options: [
-                        "Symmetric matrix.",
-                        "Diagonal matrix.",
-                        "Singular matrix.",
-                        "Upper triangular matrix."
-                    ],
-                    correctAnswer: 1,
-                    points: 1
-                },
-                {
-                    question: "The transpose of a matrix $A$, denoted by $A^T$, is obtained by:",
-                    options: [
-                        "Interchanging its rows and columns.",
-                        "Multiplying all elements by -1.",
-                        "Taking the determinant.",
-                        "Swapping the main diagonal elements."
-                    ],
-                    correctAnswer: 0,
-                    points: 1
-                },
-                {
-                    question: "For a linear system of equations $A\\mathbf{x} = \\mathbf{b}$, a unique solution exists if and only if:",
-                    options: [
-                        "$A$ is a square matrix.",
-                        "$\\det(A) = 0$.",
-                        "$A$ is invertible.",
-                        "The system is homogeneous."
-                    ],
-                    correctAnswer: 2,
-                    points: 1
-                },
-                {
-                    question: "The set of all $2 \\times 2$ matrices with real entries forms a vector space. What is its dimension?",
-                    options: ["$2$", "$3$", "$4$", "$5$"],
-                    correctAnswer: 2,
-                    points: 1
-                },
-                {
-                    question: "The inverse of a $2 \\times 2$ matrix $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$ is $\\frac{1}{ad-bc} \\begin{pmatrix} d & -b \\\\ -c & a \\end{pmatrix}$. This inverse exists only if:",
-                    options: [
-                        "$a+d \\ne 0$",
-                        "$ad-bc \\ne 0$",
-                        "$a-d \\ne 0$",
-                        "$ad+bc \\ne 0$"
-                    ],
-                    correctAnswer: 1,
-                    points: 1
-                },
-                {
-                    question: "A set of vectors that are all mutually orthogonal and have a norm of 1 is called an:",
-                    options: [
-                        "Orthogonal basis.",
-                        "Orthonormal basis.",
-                        "Linear combination.",
-                        "Eigenbasis."
-                    ],
-                    correctAnswer: 1,
-                    points: 1
-                },
-                {
-                    question: "The characteristic equation of a matrix $A$ is used to find its:",
-                    options: [
-                        "Inverse.",
-                        "Rank.",
-                        "Eigenvalues.",
-                        "Determinant."
-                    ],
-                    correctAnswer: 2,
-                    points: 1
-                },
-                {
-                    question: "Let $S = \\{ (1, 0, 0), (0, 1, 0), (0, 0, 1) \\}$ be a basis for $\\mathbb{R}^3$. This basis is known as the:",
-                    options: [
-                        "Orthogonal basis.",
-                        "Standard basis.",
-                        "Non-trivial basis.",
-                        "Eigenbasis."
-                    ],
-                    correctAnswer: 1,
-                    points: 1
-                },
-                {
-                    question: "If $\\lambda$ is an eigenvalue of a matrix $A$, then for some non-zero vector $\\mathbf{v}$, we have $A\\mathbf{v} = \\lambda \\mathbf{v}$. The vector $\\mathbf{v}$ is called an:",
-                    options: [
-                        "Eigenvector.",
-                        "Null vector.",
-                        "Row vector.",
-                        "Column vector."
-                    ],
-                    correctAnswer: 0,
-                    points: 1
-                },
-                {
-                    question: "The condition for a matrix $A$ to be orthogonal is:",
-                    options: [
-                        "$A^T = A$",
-                        "$A^T = -A$",
-                        "$A^T A = I$",
-                        "$A^T A = 0$"
-                    ],
-                    correctAnswer: 2,
-                    points: 1
-                }
+        "question": "A vector (directed line segment) is defined by its:",
+        "options": [
+            "magnitude only.",
+            "direction only.",
+            "magnitude and direction.",
+            "starting point only."
+        ],
+        "correctAnswer": 2,
+        "points": 1
+    },
+    {
+        "question": "Two free vectors are equal if and only if they have the same:",
+        "options": [
+            "initial point.",
+            "magnitude and direction.",
+            "magnitude only.",
+            "final point."
+        ],
+        "correctAnswer": 1,
+        "points": 1
+    },
+    {
+        "question": "The addition of two vectors $\\mathbf{a}$ and $\\mathbf{b}$ can be represented geometrically by the:",
+        "options": [
+            "triangle rule.",
+            "subtraction rule.",
+            "scalar product rule.",
+            "vector product rule."
+        ],
+        "correctAnswer": 0,
+        "points": 1
+    },
+    {
+        "question": "If $\\mathbf{a}$ is a vector and $k$ is a scalar, the vector $k\\mathbf{a}$ has a magnitude of $|k| |\\mathbf{a}|$. The direction of $k\\mathbf{a}$ is the same as $\\mathbf{a}$ if:",
+        "options": [
+            "$k = 0$.",
+            "$k < 0$.",
+            "$k > 0$.",
+            "$k = 1$."
+        ],
+        "correctAnswer": 2,
+        "points": 1
+    },
+    {
+        "question": "The position vector of a point $P$ is a vector $\\overrightarrow{OP}$ originating from the origin $O$. If a point $R$ divides the line segment $PQ$ internally in the ratio $m:n$, its position vector $\\mathbf{r}$ is given by:",
+        "options": [
+            "$\\frac{n\\mathbf{p} + m\\mathbf{q}}{m+n}$",
+            "$\\frac{m\\mathbf{p} - n\\mathbf{q}}{m-n}$",
+            "$\\frac{m\\mathbf{p} + n\\mathbf{q}}{m+n}$",
+            "$\\frac{m\\mathbf{q} + n\\mathbf{p}}{m-n}$"
+        ],
+        "correctAnswer": 0,
+        "points": 1
+    },
+    {
+        "question": "Three points $A, B, C$ with position vectors $\\mathbf{a}, \\mathbf{b}, \\mathbf{c}$ are collinear if and only if there exists a scalar $t$ such that:",
+        "options": [
+            "$\\mathbf{b} - \\mathbf{a} = t(\\mathbf{c} - \\mathbf{a})$",
+            "$\\mathbf{a} + \\mathbf{b} + \\mathbf{c} = \\mathbf{0}$",
+            "$\\mathbf{a} \\cdot \\mathbf{b} = 0$",
+            "$\\mathbf{a} \\times \\mathbf{b} = \\mathbf{0}$"
+        ],
+        "correctAnswer": 0,
+        "points": 1
+    },
+    {
+        "question": "The condition for four points $A, B, C, D$ to be coplanar is that the vectors $\\overrightarrow{AB}, \\overrightarrow{AC}, \\overrightarrow{AD}$ are:",
+        "options": [
+            "linearly independent.",
+            "mutually orthogonal.",
+            "non-zero.",
+            "linearly dependent."
+        ],
+        "correctAnswer": 3,
+        "points": 1
+    },
+    {
+        "question": "A vector $\\mathbf{r}$ in three dimensions can be expressed in terms of its rectangular components as $\\mathbf{r} = x\\mathbf{i} + y\\mathbf{j} + z\\mathbf{k}$. The magnitude of this vector is:",
+        "options": [
+            "$x+y+z$",
+            "$\\sqrt{x^2+y^2+z^2}$",
+            "$x^2+y^2+z^2$",
+            "$(x, y, z)$"
+        ],
+        "correctAnswer": 1,
+        "points": 1
+    },
+    {
+        "question": "The scalar product (dot product) of two vectors $\\mathbf{a}$ and $\\mathbf{b}$ is defined as $\\mathbf{a} \\cdot \\mathbf{b} = |\\mathbf{a}| |\\mathbf{b}| \\cos\\theta$. It gives a:",
+        "options": [
+            "scalar quantity.",
+            "vector quantity.",
+            "matrix.",
+            "complex number."
+        ],
+        "correctAnswer": 0,
+        "points": 1
+    },
+    {
+        "question": "The vector product (cross product) of two vectors $\\mathbf{a}$ and $\\mathbf{b}$ is defined as $\\mathbf{a} \\times \\mathbf{b} = |\\mathbf{a}| |\\mathbf{b}| \\sin\\theta \\hat{\\mathbf{n}}$. The resulting vector is:",
+        "options": [
+            "parallel to $\\mathbf{a}$ and $\\mathbf{b}$.",
+            "perpendicular to both $\\mathbf{a}$ and $\\mathbf{b}$.",
+            "a scalar quantity.",
+            "the same as the dot product."
+        ],
+        "correctAnswer": 1,
+        "points": 1
+    },
+    {
+        "question": "The scalar triple product of three vectors $\\mathbf{a}, \\mathbf{b}, \\mathbf{c}$ is given by $\\mathbf{a} \\cdot (\\mathbf{b} \\times \\mathbf{c})$. Geometrically, its absolute value represents the volume of the:",
+        "options": [
+            "parallelogram.",
+            "triangle.",
+            "cuboid.",
+            "parallelepiped."
+        ],
+        "correctAnswer": 3,
+        "points": 1
+    },
+    {
+        "question": "The vector triple product of three vectors $\\mathbf{a}, \\mathbf{b}, \\mathbf{c}$ is given by $\\mathbf{a} \\times (\\mathbf{b} \\times \\mathbf{c})$. This operation results in a vector that lies in the plane containing:",
+        "options": [
+            "$\\mathbf{a}$ and $\\mathbf{b}$.",
+            "$\\mathbf{b}$ and $\\mathbf{c}$.",
+            "$\\mathbf{a}$ and $\\mathbf{c}$.",
+            "all three vectors."
+        ],
+        "correctAnswer": 1,
+        "points": 1
+    },
+    {
+        "question": "The angle $\\theta$ between two vectors $\\mathbf{a} = a_1\\mathbf{i} + a_2\\mathbf{j} + a_3\\mathbf{k}$ and $\\mathbf{b} = b_1\\mathbf{i} + b_2\\mathbf{j} + b_3\\mathbf{k}$ can be found using the formula $\\cos\\theta = \\frac{\\mathbf{a} \\cdot \\mathbf{b}}{?}$.",
+        "options": [
+            "$|\\mathbf{a}| + |\\mathbf{b}|$.",
+            "$|\\mathbf{a}| |\\mathbf{b}|$.",
+            "$|\\mathbf{a} - \\mathbf{b}|$.",
+            "$\\mathbf{a} \\times \\mathbf{b}$."
+        ],
+        "correctAnswer": 1,
+        "points": 1
+    },
+    {
+        "question": "The area of a parallelogram with adjacent sides given by vectors $\\mathbf{a}$ and $\\mathbf{b}$ is equal to the magnitude of their:",
+        "options": [
+            "scalar product.",
+            "vector sum.",
+            "vector product.",
+            "scalar subtraction."
+        ],
+        "correctAnswer": 2,
+        "points": 1
+    },
+    {
+        "question": "The work done by a constant force $\\mathbf{F}$ in displacing an object by a vector $\\mathbf{d}$ is given by the scalar product:",
+        "options": [
+            "$\\mathbf{F} \\cdot \\mathbf{d}$",
+            "$\\mathbf{F} \\times \\mathbf{d}$",
+            "$\\mathbf{F} + \\mathbf{d}$",
+            "$\\mathbf{F} - \\mathbf{d}$"
+        ],
+        "correctAnswer": 0,
+        "points": 1
+    },
+    {
+        "question": "If the scalar triple product of three non-zero vectors $\\mathbf{a}, \\mathbf{b}, \\mathbf{c}$ is zero, then the vectors are:",
+        "options": [
+            "mutually orthogonal.",
+            "linearly independent.",
+            "collinear.",
+            "coplanar."
+        ],
+        "correctAnswer": 3,
+        "points": 1
+    },
+    {
+        "question": "The identity $\\mathbf{a} \\times (\\mathbf{b} \\times \\mathbf{c}) = (\\mathbf{a} \\cdot \\mathbf{c})\\mathbf{b} - (\\mathbf{a} \\cdot \\mathbf{b})\\mathbf{c}$ is known as:",
+        "options": [
+            "Lagrange's identity.",
+            "Binet-Cauchy identity.",
+            "Jacobi identity.",
+            "the scalar triple product formula."
+        ],
+        "correctAnswer": 0,
+        "points": 1
+    },
+    {
+        "question": "What is the result of $(\\mathbf{i} \\times \\mathbf{j}) \\cdot \\mathbf{k}$?",
+        "options": [
+            "$0$",
+            "$1$",
+            "$-1$",
+            "$\\mathbf{i}$"
+        ],
+        "correctAnswer": 1,
+        "points": 1
+    },
+    {
+        "question": "The position vector of the centroid of a triangle with vertices $A, B, C$ with position vectors $\\mathbf{a}, \\mathbf{b}, \\mathbf{c}$ is:",
+        "options": [
+            "$\\frac{\\mathbf{a} + \\mathbf{b} + \\mathbf{c}}{2}$",
+            "$\\frac{\\mathbf{a} + \\mathbf{b} + \\mathbf{c}}{3}$",
+            "$\\mathbf{a} + \\mathbf{b} + \\mathbf{c}$",
+            "$\\frac{\\mathbf{a} - \\mathbf{b} - \\mathbf{c}}{3}$"
+        ],
+        "correctAnswer": 1,
+        "points": 1
+    },
+    {
+        "question": "For a vector $\\mathbf{a} = 2\\mathbf{i} + 3\\mathbf{j} - 4\\mathbf{k}$, the rectangular components are:",
+        "options": [
+            "$(2, 3, 4)$",
+            "$(2, 3, -4)$",
+            "$(2, -3, 4)$",
+            "$(2, 3)$"
+        ],
+        "correctAnswer": 1,
+        "points": 1
+    },
+    {
+        "question": "If $\\mathbf{a} = 2\\mathbf{i}$ and $\\mathbf{b} = 3\\mathbf{j}$, what is $\\mathbf{a} \\cdot \\mathbf{b}$?",
+        "options": [
+            "$6$",
+            "$-6$",
+            "$0$",
+            "$6\\mathbf{k}$"
+        ],
+        "correctAnswer": 2,
+        "points": 1
+    },
+    {
+        "question": "The distributive property for the scalar product is $\\mathbf{a} \\cdot (\\mathbf{b} + \\mathbf{c}) = $:",
+        "options": [
+            "$\\mathbf{a} \\cdot \\mathbf{b} + \\mathbf{a} \\cdot \\mathbf{c}$",
+            "$\\mathbf{a} \\cdot \\mathbf{b} - \\mathbf{a} \\cdot \\mathbf{c}$",
+            "$\\mathbf{a} \\times \\mathbf{b} + \\mathbf{a} \\times \\mathbf{c}$",
+            "$\\mathbf{a} + \\mathbf{b} + \\mathbf{c}$"
+        ],
+        "correctAnswer": 0,
+        "points": 1
+    },
+    {
+        "question": "The vector product is anti-commutative, which means $\\mathbf{a} \\times \\mathbf{b} = $:",
+        "options": [
+            "$\\mathbf{b} \\times \\mathbf{a}$",
+            "$-(\\mathbf{b} \\times \\mathbf{a})$",
+            "$|\\mathbf{a}| |\\mathbf{b}| \\sin\\theta$",
+            "$0$"
+        ],
+        "correctAnswer": 1,
+        "points": 1
+    },
+    {
+        "question": "The condition for two vectors $\\mathbf{a}$ and $\\mathbf{b}$ to be parallel is that their vector product $\\mathbf{a} \\times \\mathbf{b}$ is:",
+        "options": [
+            "$\\mathbf{0}$",
+            "$1$",
+            "$-1$",
+            "$\\mathbf{a} \\cdot \\mathbf{b}$"
+        ],
+        "correctAnswer": 0,
+        "points": 1
+    },
+    {
+        "question": "The condition for two vectors $\\mathbf{a}$ and $\\mathbf{b}$ to be orthogonal (perpendicular) is that their scalar product $\\mathbf{a} \\cdot \\mathbf{b}$ is:",
+        "options": [
+            "$1$",
+            "$-1$",
+            "$0$",
+            "$\\mathbf{0}$"
+        ],
+        "correctAnswer": 2,
+        "points": 1
+    },
+    {
+        "question": "The area of a triangle with adjacent sides given by vectors $\\mathbf{a}$ and $\\mathbf{b}$ is:",
+        "options": [
+            "$|\\mathbf{a} \\times \\mathbf{b}|$.",
+            "$\\frac{1}{2} |\\mathbf{a} \\times \\mathbf{b}|$.",
+            "$\\mathbf{a} \\cdot \\mathbf{b}$.",
+            "$\\frac{1}{2} |\\mathbf{a} \\cdot \\mathbf{b}|$.",
+        ],
+        "correctAnswer": 1,
+        "points": 1
+    },
+    {
+        "question": "The value of the scalar triple product $[\\mathbf{a}, \\mathbf{a}, \\mathbf{c}]$ is:",
+        "options": [
+            "$0$",
+            "$1$",
+            "$-1$",
+            "$\\mathbf{a} \\cdot \\mathbf{a}$"
+        ],
+        "correctAnswer": 0,
+        "points": 1
+    },
+    {
+        "question": "The position vector of a point $P$ dividing a line segment $AB$ externally in the ratio $m:n$ is given by:",
+        "options": [
+            "$\\frac{n\\mathbf{a} - m\\mathbf{b}}{n-m}$",
+            "$\\frac{m\\mathbf{b} - n\\mathbf{a}}{m-n}$",
+            "$\\frac{m\\mathbf{a} + n\\mathbf{b}}{m+n}$",
+            "$\\frac{m\\mathbf{b} + n\\mathbf{a}}{m-n}$"
+        ],
+        "correctAnswer": 1,
+        "points": 1
+    },
+    {
+        "question": "The magnitude of the vector $\\mathbf{v} = 3\\mathbf{i} - 2\\mathbf{j} + \\mathbf{k}$ is:",
+        "options": [
+            "$\\sqrt{6}$",
+            "$\\sqrt{14}$",
+            "$14$",
+            "$6$"
+        ],
+        "correctAnswer": 1,
+        "points": 1
+    },
+    {
+        "question": "The dot product of two vectors $\\mathbf{u}$ and $\\mathbf{v}$ is given by $\\mathbf{u} \\cdot \\mathbf{v} = u_1v_1 + u_2v_2 + u_3v_3$. This operation is:",
+        "options": [
+            "commutative.",
+            "non-commutative.",
+            "associative.",
+            "distributive over vector product."
+        ],
+        "correctAnswer": 0,
+        "points": 1
+    }
             ]
         };
 
