@@ -1,918 +1,643 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WBSLST 2025 Math Mock Test</title>
-    <!-- Tailwind CSS for styling -->
+    <title>WB Group C & D মক টেস্ট</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- MathJax Configuration and Script -->
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\KATEX_INLINE_OPEN', '\KATEX_INLINE_CLOSE']]
-            },
-            svg: {
-                fontCache: 'global'
-            },
-            options: {
-                renderActions: {
-                    addMenu: [20, function (doc) {
-                        if (doc.type === "HTML") {
-                            const MENU = MathJax._.ui.menu.Menu;
-                            MENU.defaultStyles(doc.menuStyles);
-                            MENU.defaultFonts(doc.menuFont);
-                        }
-                    }, '']
-                }
-            }
-        };
-    </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
-    <!-- Libraries for PDF generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* A very light gray background */
+            background-color: #f3f4f6;
         }
-        /* Custom styles for MathJax to ensure proper alignment */
-        .math {
-            display: inline-block;
-            vertical-align: middle;
-            font-size: 1.125rem; /* Matches text-lg from Tailwind */
+        .container {
+            max-width: 800px;
         }
-        /* Premium button styles */
-        .btn-premium {
-            background: linear-gradient(135deg, #4c1d95, #3b0764); /* Deep purple gradient */
-            color: white;
-            font-weight: 600;
-            padding: 0.75rem 2rem;
-            border-radius: 9999px; /* Fully rounded */
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
+        .message-box {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 100;
+            transition: transform 0.3s ease-in-out;
+            transform: translateY(-150%);
         }
-        .btn-premium:hover {
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-            transform: translateY(-3px) scale(1.05);
+        .message-box.show {
+            transform: translateY(0);
         }
-        .btn-premium:active {
-            transform: translateY(0) scale(1);
-        }
-        /* Style for the answer options */
-        .option-label {
-            cursor: pointer;
-            padding: 1rem 1.5rem;
-            border-radius: 0.75rem;
-            border-width: 1px;
-            border-color: #e2e8f0; /* Default border color */
-            transition: all 0.3s ease;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        .option-label:hover {
-            background-color: #f9fafb; /* Subtle hover */
-            border-color: #cbd5e0;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        input[type="radio"]:checked + .option-label {
-            background-color: #eef2ff; /* Light indigo when checked */
-            border-color: #6366f1; /* Indigo border */
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-        }
-        /* Hero background with premium gradient */
-        .hero-bg {
-            background: linear-gradient(135deg, #4c1d95 0%, #3b0764 100%); /* Deep purple gradient */
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-bg::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-            opacity: 0.5;
-        }
-        /* Testimonial background with premium dark theme */
-        .testimonial-bg {
-            background: linear-gradient(135deg, #1f2937 0%, #111827 100%); /* Dark gray gradient */
-        }
-        .testimonial-card {
-            background: linear-gradient(135deg, #374151 0%, #1f2937 100%); /* Premium card gradient */
-            border-radius: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .testimonial-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
-        }
-        /* About Us premium styling */
-        .about-bg {
-            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-        }
-        /* Fade-in animation */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         .animate-fade-in-up {
-            animation: fadeInUp 0.6s ease-out forwards;
-        }
-        /* Quiz container premium shadow */
-        #quiz-flow-container .bg-white {
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            border-radius: 1.5rem;
+            animation: fade-in-up 0.5s ease-out forwards;
         }
     </style>
 </head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
 
-<body class="min-h-screen">
-    <!-- Main Dashboard Section -->
-    <div id="main-dashboard-section" class="min-h-screen hero-bg text-white flex flex-col items-center">
-        <!-- Hero Section -->
-        <div class="text-center max-w-4xl w-full py-20 px-4 md:px-8 relative z-10">
-            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in-up">WBSLST 2025</h1>
-            <p class="text-xl md:text-2xl text-gray-200 font-light mb-8 animate-fade-in-up" style="animation-delay: 0.2s;">
-                Elevate your preparation with premium mock tests for Math excellence.
-            </p>
-            <button id="start-test-button" class="btn-premium">
-                Begin Premium Mock Test
-            </button>
+    <!-- Main Container -->
+    <div class="container bg-white rounded-xl shadow-2xl overflow-hidden animate-fade-in-up">
+        <!-- Header -->
+        <header class="bg-blue-600 text-white p-6 md:p-8 text-center rounded-t-xl">
+            <h1 class="text-3xl md:text-4xl font-bold">WB Group C & D মক টেস্ট পোর্টাল</h1>
+            <p class="mt-2 text-sm md:text-base opacity-90">আপনার পরীক্ষার প্রস্তুতির জন্য একটি অনুশীলন পরীক্ষা।</p>
+        </header>
+
+        <!-- Message Box for Alerts -->
+        <div id="message-box" class="message-box bg-red-500 text-white p-4 rounded-lg shadow-lg">
+            <p id="message-text"></p>
         </div>
 
-        <!-- About Us Section (Updated) -->
-        <div id="about-us-section" class="about-bg py-16 md:py-24 px-4 md:px-8 w-full text-gray-800">
-            <div class="max-w-4xl mx-auto text-center">
-                <div class="flex justify-center mb-6">
-                    <!-- Premium SVG for a graduation cap with gradient -->
-                    <svg class="w-16 h-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="url(#grad)">
-                        <defs>
-                            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:#4c1d95;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#3b0764;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <path d="M21.5 8.01L12 3.51L2.5 8.01L12 12.51L21.5 8.01ZM21.5 10.01L12 14.51L2.5 10.01V12.01L12 16.51L21.5 12.01V10.01ZM21.5 14.01L12 18.51L2.5 14.01V16.01L12 20.51L21.5 16.01V14.01Z"></path>
-                    </svg>
-                </div>
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 animate-fade-in-up">Discover Our Premium Portal</h2>
-                <p class="text-lg md:text-xl text-gray-600 leading-relaxed mb-4 animate-fade-in-up" style="animation-delay: 0.1s;">
-                    Experience elite preparation with our advanced Math Mock Test Portal, crafted for top-tier competitive exam success.
-                </p>
-                <p class="text-lg md:text-xl text-gray-600 leading-relaxed animate-fade-in-up" style="animation-delay: 0.2s;">
-                    Unlock structured, high-quality mock tests designed to refine your skills and boost confidence for exceptional results.
-                </p>
+        <!-- Login Section -->
+        <div id="login-section" class="p-6 md:p-10 text-center">
+            <h2 class="text-2xl font-semibold text-gray-800">পরীক্ষা শুরু করতে লগইন করুন</h2>
+            <form id="login-form" class="mt-6 space-y-4">
+                <input type="text" id="name" placeholder="আপনার নাম লিখুন" class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition duration-300">
+                <input type="tel" id="mobile" placeholder="আপনার মোবাইল নম্বর লিখুন" class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition duration-300">
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 shadow-md">পরীক্ষা শুরু করুন</button>
+            </form>
+        </div>
+
+        <!-- Test Section (Initially Hidden) -->
+        <div id="test-section" class="hidden p-6 md:p-10">
+            <h2 class="text-2xl font-semibold text-gray-800 text-center mb-6">মক টেস্ট</h2>
+            <p id="user-info" class="text-center text-sm mb-4 text-gray-600"></p>
+            <div id="timer" class="text-center font-bold text-gray-700 text-lg mb-6">সময় বাকি: 60:00</div>
+            <div id="quiz-container" class="space-y-6">
+                <!-- Questions will be injected here by JavaScript -->
+            </div>
+            <div class="text-center mt-8">
+                <button id="submit-button" class="bg-green-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-green-700 transition duration-300 transform hover:scale-105 shadow-md">উত্তর জমা দিন</button>
             </div>
         </div>
 
-        <!-- Testimonials Section -->
-        <div id="testimonials-section" class="testimonial-bg text-white py-16 md:py-24 px-4 md:px-8 w-full">
-            <div class="max-w-5xl mx-auto">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 animate-fade-in-up">Voices of Success</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
-                    <!-- Testimonial Card 1 -->
-                    <div class="testimonial-card p-6 flex flex-col h-full">
-                        <p class="text-lg text-gray-300 italic mb-4">
-                            "The premium mock tests elevated my preparation to new heights. Truly transformative!"
-                        </p>
-                        <div class="mt-auto">
-                            <p class="font-semibold text-white">Ananya Majumdar</p>
-                            <p class="text-sm text-gray-400">SLST Math Aspirant</p>
-                        </div>
-                    </div>
-                    <!-- Testimonial Card 2 -->
-                    <div class="testimonial-card p-6 flex flex-col h-full">
-                        <p class="text-lg text-gray-300 italic mb-4">
-                            "Elite questions aligned perfectly with the syllabus. A game-changer for my strategy."
-                        </p>
-                        <div class="mt-auto">
-                            <p class="font-semibold text-white">Somnath Ghosh</p>
-                            <p class="text-sm text-gray-400">SLST Math Aspirant</p>
-                        </div>
-                    </div>
-                    <!-- Testimonial Card 3 -->
-                    <div class="testimonial-card p-6 flex flex-col h-full">
-                        <p class="text-lg text-gray-300 italic mb-4">
-                            "The focused, one-by-one format is premium and stress-free. Exceptional platform!"
-                        </p>
-                        <div class="mt-auto">
-                            <p class="font-semibold text-white">Priya Roy</p>
-                            <p class="text-sm text-gray-400">SLST Math Aspirant</p>
-                        </div>
-                    </div>
-                    <!-- Testimonial Card 4 -->
-                    <div class="testimonial-card p-6 flex flex-col h-full">
-                        <p class="text-lg text-gray-300 italic mb-4">
-                            "Significantly enhanced my precision. Premium quality for serious aspirants."
-                        </p>
-                        <div class="mt-auto">
-                            <p class="font-semibold text-white">Arindam Das</p>
-                            <p class="text-sm text-gray-400">SLST Math Aspirant</p>
-                        </div>
-                    </div>
-                </div>
+        <!-- Results Section (Initially Hidden) -->
+        <div id="results-section" class="hidden p-6 md:p-10 text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">পরীক্ষার ফলাফল</h2>
+            <div class="bg-gray-100 p-6 rounded-lg">
+                <p id="result-message" class="text-lg text-gray-700 mb-2">খুব ভালো, <span id="final-name" class="font-semibold text-blue-600"></span>!</p>
+                <p class="text-xl text-gray-800 font-medium">আপনার স্কোর: <span id="score" class="text-2xl font-bold text-green-600">0</span> / <span id="total-questions" class="font-bold">0</span></p>
+                <p id="congratulations" class="text-green-500 mt-2 font-semibold hidden">অভিনন্দন! আপনি পাশ করেছেন!</p>
+                <p id="try-again" class="text-red-500 mt-2 font-semibold hidden">চিন্তা করবেন না, আবার চেষ্টা করুন!</p>
             </div>
-        </div>
-    </div>
-    
-    <!-- Hidden Quiz Sections (Initial Forms, Quiz, and Results) -->
-    <div id="quiz-flow-container" class="fixed inset-0 bg-gray-100 z-50 p-4 hidden overflow-y-auto flex items-center justify-center">
-        <div class="bg-white shadow-2xl rounded-xl p-6 md:p-10 w-full max-w-4xl space-y-8">
-            <div class="flex justify-start">
-                <button id="back-to-home" class="text-gray-500 hover:text-gray-900 transition-colors duration-200">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                </button>
-            </div>
-            
-            <!-- Student Info Form (inside the hidden container) -->
-            <div id="student-form-section">
-                <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Start Your Test</h1>
-                <div id="message-box" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                    <span class="block sm:inline" id="message-text"></span>
-                </div>
-                <form id="student-form" class="space-y-4">
-                    <div>
-                        <label for="studentName" class="block text-sm font-medium text-gray-700">Name</label>
-                        <input type="text" id="studentName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2" placeholder="John Doe" required>
-                    </div>
-                    <div>
-                        <label for="mobileNumber" class="block text-sm font-medium text-gray-700">Mobile Number</label>
-                        <input type="tel" id="mobileNumber" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2" placeholder="10-digit number" required pattern="[0-9]{10}" maxlength="10">
-                    </div>
-                    <button type="submit" class="w-full btn-premium">Start Quiz</button>
-                </form>
-            </div>
-
-            <!-- Quiz Section (Hidden by default) -->
-            <div id="quiz-section" class="hidden">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800">Quiz</h2>
-                    <div class="text-lg font-medium text-gray-600">Time Left: <span id="timer"></span></div>
-                </div>
-                <div id="quiz-container" class="space-y-6">
-                    <!-- Single question will be dynamically inserted here -->
-                </div>
-                <div class="mt-8 flex justify-between">
-                    <p id="question-counter" class="text-gray-500 text-sm font-medium"></p>
-                    <button id="next-button" class="btn-premium">Next Question</button>
-                </div>
-            </div>
-
-            <!-- Results Section (Hidden by default) -->
-            <div id="results-section" class="hidden text-center">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">Quiz Results</h2>
-                <div class="space-y-4">
-                    <p class="text-lg font-medium text-gray-700">Student: <span id="final-student-name" class="font-bold"></span></p>
-                    <p class="text-lg font-medium text-gray-700">Mobile: <span id="final-mobile-number" class="font-bold"></span></p>
-                    <p class="text-2xl font-semibold text-gray-800">Total Score: <span id="final-score" class="text-blue-600 font-extrabold text-4xl"></span></p>
-                    <p id="time-taken" class="text-sm text-gray-500"></p>
-                </div>
-                <button id="restart-button" class="mt-8 btn-premium">Try Again</button>
-                <button id="download-pdf-button" class="mt-4 btn-premium">Download Scorecard</button>
-            </div>
+            <button id="retake-button" class="mt-8 bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 shadow-md">আবার পরীক্ষা দিন</button>
         </div>
     </div>
 
     <script>
-        // --- Hardcoded Quiz Data ---
-        const quizData = {
-            duration: 30, // Test duration in minutes
-            questions: [
-                {
-        "question": "A vector (directed line segment) is defined by its:",
-        "options": [
-            "magnitude only.",
-            "direction only.",
-            "magnitude and direction.",
-            "starting point only."
-        ],
-        "correctAnswer": 2,
-        "points": 1
-    },
-    {
-        "question": "Two free vectors are equal if and only if they have the same:",
-        "options": [
-            "initial point.",
-            "magnitude and direction.",
-            "magnitude only.",
-            "final point."
-        ],
-        "correctAnswer": 1,
-        "points": 1
-    },
-    {
-        "question": "The addition of two vectors $\\mathbf{a}$ and $\\mathbf{b}$ can be represented geometrically by the:",
-        "options": [
-            "triangle rule.",
-            "subtraction rule.",
-            "scalar product rule.",
-            "vector product rule."
-        ],
-        "correctAnswer": 0,
-        "points": 1
-    },
-    {
-        "question": "If $\\mathbf{a}$ is a vector and $k$ is a scalar, the vector $k\\mathbf{a}$ has a magnitude of $|k| |\\mathbf{a}|$. The direction of $k\\mathbf{a}$ is the same as $\\mathbf{a}$ if:",
-        "options": [
-            "$k = 0$.",
-            "$k < 0$.",
-            "$k > 0$.",
-            "$k = 1$."
-        ],
-        "correctAnswer": 2,
-        "points": 1
-    },
-    {
-        "question": "The position vector of a point $P$ is a vector $\\overrightarrow{OP}$ originating from the origin $O$. If a point $R$ divides the line segment $PQ$ internally in the ratio $m:n$, its position vector $\\mathbf{r}$ is given by:",
-        "options": [
-            "$\\frac{n\\mathbf{p} + m\\mathbf{q}}{m+n}$",
-            "$\\frac{m\\mathbf{p} - n\\mathbf{q}}{m-n}$",
-            "$\\frac{m\\mathbf{p} + n\\mathbf{q}}{m+n}$",
-            "$\\frac{m\\mathbf{q} + n\\mathbf{p}}{m-n}$"
-        ],
-        "correctAnswer": 0,
-        "points": 1
-    },
-    {
-        "question": "Three points $A, B, C$ with position vectors $\\mathbf{a}, \\mathbf{b}, \\mathbf{c}$ are collinear if and only if there exists a scalar $t$ such that:",
-        "options": [
-            "$\\mathbf{b} - \\mathbf{a} = t(\\mathbf{c} - \\mathbf{a})$",
-            "$\\mathbf{a} + \\mathbf{b} + \\mathbf{c} = \\mathbf{0}$",
-            "$\\mathbf{a} \\cdot \\mathbf{b} = 0$",
-            "$\\mathbf{a} \\times \\mathbf{b} = \\mathbf{0}$"
-        ],
-        "correctAnswer": 0,
-        "points": 1
-    },
-    {
-        "question": "The condition for four points $A, B, C, D$ to be coplanar is that the vectors $\\overrightarrow{AB}, \\overrightarrow{AC}, \\overrightarrow{AD}$ are:",
-        "options": [
-            "linearly independent.",
-            "mutually orthogonal.",
-            "non-zero.",
-            "linearly dependent."
-        ],
-        "correctAnswer": 3,
-        "points": 1
-    },
-    {
-        "question": "A vector $\\mathbf{r}$ in three dimensions can be expressed in terms of its rectangular components as $\\mathbf{r} = x\\mathbf{i} + y\\mathbf{j} + z\\mathbf{k}$. The magnitude of this vector is:",
-        "options": [
-            "$x+y+z$",
-            "$\\sqrt{x^2+y^2+z^2}$",
-            "$x^2+y^2+z^2$",
-            "$(x, y, z)$"
-        ],
-        "correctAnswer": 1,
-        "points": 1
-    },
-    {
-        "question": "The scalar product (dot product) of two vectors $\\mathbf{a}$ and $\\mathbf{b}$ is defined as $\\mathbf{a} \\cdot \\mathbf{b} = |\\mathbf{a}| |\\mathbf{b}| \\cos\\theta$. It gives a:",
-        "options": [
-            "scalar quantity.",
-            "vector quantity.",
-            "matrix.",
-            "complex number."
-        ],
-        "correctAnswer": 0,
-        "points": 1
-    },
-    {
-        "question": "The vector product (cross product) of two vectors $\\mathbf{a}$ and $\\mathbf{b}$ is defined as $\\mathbf{a} \\times \\mathbf{b} = |\\mathbf{a}| |\\mathbf{b}| \\sin\\theta \\hat{\\mathbf{n}}$. The resulting vector is:",
-        "options": [
-            "parallel to $\\mathbf{a}$ and $\\mathbf{b}$.",
-            "perpendicular to both $\\mathbf{a}$ and $\\mathbf{b}$.",
-            "a scalar quantity.",
-            "the same as the dot product."
-        ],
-        "correctAnswer": 1,
-        "points": 1
-    },
-    {
-        "question": "The scalar triple product of three vectors $\\mathbf{a}, \\mathbf{b}, \\mathbf{c}$ is given by $\\mathbf{a} \\cdot (\\mathbf{b} \\times \\mathbf{c})$. Geometrically, its absolute value represents the volume of the:",
-        "options": [
-            "parallelogram.",
-            "triangle.",
-            "cuboid.",
-            "parallelepiped."
-        ],
-        "correctAnswer": 3,
-        "points": 1
-    },
-    {
-        "question": "The vector triple product of three vectors $\\mathbf{a}, \\mathbf{b}, \\mathbf{c}$ is given by $\\mathbf{a} \\times (\\mathbf{b} \\times \\mathbf{c})$. This operation results in a vector that lies in the plane containing:",
-        "options": [
-            "$\\mathbf{a}$ and $\\mathbf{b}$.",
-            "$\\mathbf{b}$ and $\\mathbf{c}$.",
-            "$\\mathbf{a}$ and $\\mathbf{c}$.",
-            "all three vectors."
-        ],
-        "correctAnswer": 1,
-        "points": 1
-    },
-    {
-        "question": "The angle $\\theta$ between two vectors $\\mathbf{a} = a_1\\mathbf{i} + a_2\\mathbf{j} + a_3\\mathbf{k}$ and $\\mathbf{b} = b_1\\mathbf{i} + b_2\\mathbf{j} + b_3\\mathbf{k}$ can be found using the formula $\\cos\\theta = \\frac{\\mathbf{a} \\cdot \\mathbf{b}}{?}$.",
-        "options": [
-            "$|\\mathbf{a}| + |\\mathbf{b}|$.",
-            "$|\\mathbf{a}| |\\mathbf{b}|$.",
-            "$|\\mathbf{a} - \\mathbf{b}|$.",
-            "$\\mathbf{a} \\times \\mathbf{b}$."
-        ],
-        "correctAnswer": 1,
-        "points": 1
-    },
-    {
-        "question": "The area of a parallelogram with adjacent sides given by vectors $\\mathbf{a}$ and $\\mathbf{b}$ is equal to the magnitude of their:",
-        "options": [
-            "scalar product.",
-            "vector sum.",
-            "vector product.",
-            "scalar subtraction."
-        ],
-        "correctAnswer": 2,
-        "points": 1
-    },
-    {
-        "question": "The work done by a constant force $\\mathbf{F}$ in displacing an object by a vector $\\mathbf{d}$ is given by the scalar product:",
-        "options": [
-            "$\\mathbf{F} \\cdot \\mathbf{d}$",
-            "$\\mathbf{F} \\times \\mathbf{d}$",
-            "$\\mathbf{F} + \\mathbf{d}$",
-            "$\\mathbf{F} - \\mathbf{d}$"
-        ],
-        "correctAnswer": 0,
-        "points": 1
-    },
-    {
-        "question": "If the scalar triple product of three non-zero vectors $\\mathbf{a}, \\mathbf{b}, \\mathbf{c}$ is zero, then the vectors are:",
-        "options": [
-            "mutually orthogonal.",
-            "linearly independent.",
-            "collinear.",
-            "coplanar."
-        ],
-        "correctAnswer": 3,
-        "points": 1
-    },
-    {
-        "question": "The identity $\\mathbf{a} \\times (\\mathbf{b} \\times \\mathbf{c}) = (\\mathbf{a} \\cdot \\mathbf{c})\\mathbf{b} - (\\mathbf{a} \\cdot \\mathbf{b})\\mathbf{c}$ is known as:",
-        "options": [
-            "Lagrange's identity.",
-            "Binet-Cauchy identity.",
-            "Jacobi identity.",
-            "the scalar triple product formula."
-        ],
-        "correctAnswer": 0,
-        "points": 1
-    },
-    {
-        "question": "What is the result of $(\\mathbf{i} \\times \\mathbf{j}) \\cdot \\mathbf{k}$?",
-        "options": [
-            "$0$",
-            "$1$",
-            "$-1$",
-            "$\\mathbf{i}$"
-        ],
-        "correctAnswer": 1,
-        "points": 1
-    },
-    {
-        "question": "The position vector of the centroid of a triangle with vertices $A, B, C$ with position vectors $\\mathbf{a}, \\mathbf{b}, \\mathbf{c}$ is:",
-        "options": [
-            "$\\frac{\\mathbf{a} + \\mathbf{b} + \\mathbf{c}}{2}$",
-            "$\\frac{\\mathbf{a} + \\mathbf{b} + \\mathbf{c}}{3}$",
-            "$\\mathbf{a} + \\mathbf{b} + \\mathbf{c}$",
-            "$\\frac{\\mathbf{a} - \\mathbf{b} - \\mathbf{c}}{3}$"
-        ],
-        "correctAnswer": 1,
-        "points": 1
-    },
-    {
-        "question": "For a vector $\\mathbf{a} = 2\\mathbf{i} + 3\\mathbf{j} - 4\\mathbf{k}$, the rectangular components are:",
-        "options": [
-            "$(2, 3, 4)$",
-            "$(2, 3, -4)$",
-            "$(2, -3, 4)$",
-            "$(2, 3)$"
-        ],
-        "correctAnswer": 1,
-        "points": 1
-    },
-    {
-        "question": "If $\\mathbf{a} = 2\\mathbf{i}$ and $\\mathbf{b} = 3\\mathbf{j}$, what is $\\mathbf{a} \\cdot \\mathbf{b}$?",
-        "options": [
-            "$6$",
-            "$-6$",
-            "$0$",
-            "$6\\mathbf{k}$"
-        ],
-        "correctAnswer": 2,
-        "points": 1
-    },
-    {
-        "question": "The distributive property for the scalar product is $\\mathbf{a} \\cdot (\\mathbf{b} + \\mathbf{c}) = $:",
-        "options": [
-            "$\\mathbf{a} \\cdot \\mathbf{b} + \\mathbf{a} \\cdot \\mathbf{c}$",
-            "$\\mathbf{a} \\cdot \\mathbf{b} - \\mathbf{a} \\cdot \\mathbf{c}$",
-            "$\\mathbf{a} \\times \\mathbf{b} + \\mathbf{a} \\times \\mathbf{c}$",
-            "$\\mathbf{a} + \\mathbf{b} + \\mathbf{c}$"
-        ],
-        "correctAnswer": 0,
-        "points": 1
-    },
-    {
-        "question": "The vector product is anti-commutative, which means $\\mathbf{a} \\times \\mathbf{b} = $:",
-        "options": [
-            "$\\mathbf{b} \\times \\mathbf{a}$",
-            "$-(\\mathbf{b} \\times \\mathbf{a})$",
-            "$|\\mathbf{a}| |\\mathbf{b}| \\sin\\theta$",
-            "$0$"
-        ],
-        "correctAnswer": 1,
-        "points": 1
-    },
-    {
-        "question": "The condition for two vectors $\\mathbf{a}$ and $\\mathbf{b}$ to be parallel is that their vector product $\\mathbf{a} \\times \\mathbf{b}$ is:",
-        "options": [
-            "$\\mathbf{0}$",
-            "$1$",
-            "$-1$",
-            "$\\mathbf{a} \\cdot \\mathbf{b}$"
-        ],
-        "correctAnswer": 0,
-        "points": 1
-    },
-    {
-        "question": "The condition for two vectors $\\mathbf{a}$ and $\\mathbf{b}$ to be orthogonal (perpendicular) is that their scalar product $\\mathbf{a} \\cdot \\mathbf{b}$ is:",
-        "options": [
-            "$1$",
-            "$-1$",
-            "$0$",
-            "$\\mathbf{0}$"
-        ],
-        "correctAnswer": 2,
-        "points": 1
-    },
-    {
-        "question": "The area of a triangle with adjacent sides given by vectors $\\mathbf{a}$ and $\\mathbf{b}$ is:",
-        "options": [
-            "$|\\mathbf{a} \\times \\mathbf{b}|$.",
-            "$\\frac{1}{2} |\\mathbf{a} \\times \\mathbf{b}|$.",
-            "$\\mathbf{a} \\cdot \\mathbf{b}$.",
-            "$\\frac{1}{2} |\\mathbf{a} \\cdot \\mathbf{b}|$.",
-        ],
-        "correctAnswer": 1,
-        "points": 1
-    },
-    {
-        "question": "The value of the scalar triple product $[\\mathbf{a}, \\mathbf{a}, \\mathbf{c}]$ is:",
-        "options": [
-            "$0$",
-            "$1$",
-            "$-1$",
-            "$\\mathbf{a} \\cdot \\mathbf{a}$"
-        ],
-        "correctAnswer": 0,
-        "points": 1
-    },
-    {
-        "question": "The position vector of a point $P$ dividing a line segment $AB$ externally in the ratio $m:n$ is given by:",
-        "options": [
-            "$\\frac{n\\mathbf{a} - m\\mathbf{b}}{n-m}$",
-            "$\\frac{m\\mathbf{b} - n\\mathbf{a}}{m-n}$",
-            "$\\frac{m\\mathbf{a} + n\\mathbf{b}}{m+n}$",
-            "$\\frac{m\\mathbf{b} + n\\mathbf{a}}{m-n}$"
-        ],
-        "correctAnswer": 1,
-        "points": 1
-    },
-    {
-        "question": "The magnitude of the vector $\\mathbf{v} = 3\\mathbf{i} - 2\\mathbf{j} + \\mathbf{k}$ is:",
-        "options": [
-            "$\\sqrt{6}$",
-            "$\\sqrt{14}$",
-            "$14$",
-            "$6$"
-        ],
-        "correctAnswer": 1,
-        "points": 1
-    },
-    {
-        "question": "The dot product of two vectors $\\mathbf{u}$ and $\\mathbf{v}$ is given by $\\mathbf{u} \\cdot \\mathbf{v} = u_1v_1 + u_2v_2 + u_3v_3$. This operation is:",
-        "options": [
-            "commutative.",
-            "non-commutative.",
-            "associative.",
-            "distributive over vector product."
-        ],
-        "correctAnswer": 0,
-        "points": 1
-    }
-            ]
-        };
+        // Data for the mock test questions (60 questions total)
+        const questions = [
+            // General Knowledge (সাধারণ জ্ঞান) - 15 questions
+            {
+                category: "সাধারণ জ্ঞান",
+                question: "কোন নদীকে 'বাংলার দুঃখ' বলা হয়?",
+                options: ["গঙ্গা", "দামোদর", "হুগলি", "তিস্তা"],
+                answer: "দামোদর"
+            },
+            {
+                category: "সাধারণ জ্ঞান",
+                question: "ইউনেস্কো বিশ্ব ঐতিহ্যবাহী স্থান সুন্দরবন কোন প্রাণীর জন্য বিখ্যাত?",
+                options: ["এশিয়াটিক সিংহ", "রয়েল বেঙ্গল টাইগার", "ভারতীয় গণ্ডার", "ভারতীয় হাতি"],
+                answer: "রয়েল বেঙ্গল টাইগার"
+            },
+            {
+                category: "সাধারণ জ্ঞান",
+                question: "পশ্চিমবঙ্গে কতগুলি জেলা আছে?",
+                options: ["২০", "২৩", "২৫", "২৯"],
+                answer: "২৩"
+            },
+            {
+                category: "সাধারণ জ্ঞান",
+                question: "পশ্চিমবঙ্গের প্রধান ফসলের নাম কী?",
+                options: ["গম", "ধান", "পাট", "চা"],
+                answer: "ধান"
+            },
+            {
+                category: "সাধারণ জ্ঞান",
+                question: "পশ্চিমবঙ্গের রাজ্য পাখির নাম কী?",
+                options: ["ময়না", "শালিক", "শাদা গলা মাছরাঙা", "ডাহুক"],
+                answer: "শাদা গলা মাছরাঙা"
+            },
+            {
+                category: "সাধারণ জ্ঞান",
+                question: "ভারতীয় সংবিধানের জনক কে?",
+                options: ["জওহরলাল নেহেরু", "ড. বি. আর. আম্বেদকর", "মহাত্মা গান্ধী", "সর্দার বল্লভভাই প্যাটেল"],
+                answer: "ড. বি. আর. আম্বেদকর"
+            },
+            {
+                category: "সাধারণ জ্ঞান",
+                question: "আয়তনের দিক থেকে ভারতের বৃহত্তম রাজ্য কোনটি?",
+                options: ["উত্তর প্রদেশ", "মধ্য প্রদেশ", "রাজস্থান", "মহারাষ্ট্র"],
+                answer: "রাজস্থান"
+            },
+            {
+                category: "সাধারণ জ্ঞান",
+                question: "পশ্চিমবঙ্গের একটি প্রধান উৎসব দুর্গাপূজা কোন মাসে পালিত হয়?",
+                options: ["জানুয়ারি", "মার্চ", "অক্টোবর", "ডিসেম্বর"],
+                answer: "অক্টোবর"
+            },
+            {
+                category: "সাধারণ জ্ঞান",
+                question: "ভারতের জাতীয় পশুর নাম কী?",
+                options: ["সিংহ", "বাঘ", "হাতি", "হরিণ"],
+                answer: "বাঘ"
+            },
+            {
+                category: "সাধারণ জ্ঞান",
+                question: "পৃথিবীর বৃহত্তম মহাদেশ কোনটি?",
+                options: ["আফ্রিকা", "আমেরিকা", "ইউরোপ", "এশিয়া"],
+                answer: "এশিয়া"
+            },
+            {
+                category: "সাধারণ জ্ঞান",
+                question: "পশ্চিমবঙ্গের রাজ্য ফুলের নাম কী?",
+                options: ["গোলাপ", "পদ্ম", "শাপলা", "শিউলি"],
+                answer: "শিউলি"
+            },
+            {
+                category: "সাধারণ জ্ঞান",
+                question: "কোন গ্রহকে লাল গ্রহ বলা হয়?",
+                options: ["বৃহস্পতি", "শনি", "মঙ্গল", "শুক্র"],
+                answer: "মঙ্গল"
+            },
+            {
+                category: "সাধারণ জ্ঞান",
+                question: "ভারতীয় রেলের সদর দপ্তর কোথায় অবস্থিত?",
+                options: ["কলকাতা", "মুম্বাই", "নয়া দিল্লি", "চেন্নাই"],
+                answer: "নয়া দিল্লি"
+            },
+            {
+                category: "সাধারণ জ্ঞান",
+                question: "পশ্চিমবঙ্গের রাজ্য মাছের নাম কী?",
+                options: ["রুই", "কাতলা", "ইলিশ", "ভেটকি"],
+                answer: "ইলিশ"
+            },
+            {
+                category: "সাধারণ জ্ঞান",
+                question: "সবচেয়ে হালকা গ্যাস কোনটি?",
+                options: ["নাইট্রোজেন", "অক্সিজেন", "হাইড্রোজেন", "হিলিয়াম"],
+                answer: "হাইড্রোজেন"
+            },
 
-        // --- Global Variables (will be used by multiple functions) ---
-        let timer = quizData.duration * 60;
-        let countdownInterval;
-        let studentName = "";
-        let mobileNumber = "";
-        let currentQuestionIndex = 0;
-        let studentAnswers = new Array(quizData.questions.length).fill(null);
-        let finalScore = 0;
-        let timeTaken = 0;
-        const totalPossibleScore = quizData.questions.reduce((sum, q) => sum + q.points, 0);
+            // Arithmetic (পাটিগণিত) - 15 questions
+            {
+                category: "পাটিগণিত",
+                question: "একটি বর্গক্ষেত্রের পরিসীমা ১৬ সেমি হলে, তার ক্ষেত্রফল কত?",
+                options: ["৪ বর্গ সেমি", "৮ বর্গ সেমি", "১২ বর্গ সেমি", "১৬ বর্গ সেমি"],
+                answer: "১৬ বর্গ সেমি"
+            },
+            {
+                category: "পাটিগণিত",
+                question: "একটি পণ্য ২০০ টাকায় কিনে ২৫০ টাকায় বিক্রি করলে শতকরা লাভ কত?",
+                options: ["২০%", "২৫%", "৫০%", "১০%"],
+                answer: "২৫%"
+            },
+            {
+                category: "পাটিগণিত",
+                question: "১২ এর বর্গ কত?",
+                options: ["১০২", "১৪৪", "১২১", "১৩২"],
+                answer: "১৪৪"
+            },
+            {
+                category: "পাটিগণিত",
+                question: "০.৫ + ০.২৫ + ০.১২৫ এর যোগফল কত?",
+                options: ["০.৮৭৫", "০.৫৭৫", "০.৬৭৫", "০.৭৭৫"],
+                answer: "০.৮৭৫"
+            },
+            {
+                category: "পাটিগণিত",
+                question: "১০০ টাকার ওপর ১০% ছাড় দিলে কত টাকা ছাড় হবে?",
+                options: ["৫ টাকা", "১০ টাকা", "১৫ টাকা", "২০ টাকা"],
+                answer: "১০ টাকা"
+            },
+            {
+                category: "পাটিগণিত",
+                question: "৩, ৫, ৭, ৯ এর গড় কত?",
+                options: ["৬", "৫", "৭", "৮"],
+                answer: "৬"
+            },
+            {
+                category: "পাটিগণিত",
+                question: "যদি A একটি কাজ ১০ দিনে করতে পারে এবং B সেই কাজ ১৫ দিনে করতে পারে, তাহলে তারা একসাথে কাজটি কত দিনে করতে পারবে?",
+                options: ["৫ দিন", "৬ দিন", "৮ দিন", "১২ দিন"],
+                answer: "৬ দিন"
+            },
+            {
+                category: "পাটিগণিত",
+                question: "১০০০ এর ১% কত?",
+                options: ["১", "১০", "১০০", "০.১"],
+                answer: "১০"
+            },
+            {
+                category: "পাটিগণিত",
+                question: "১ মিটার সমান কত সেন্টিমিটার?",
+                options: ["১০ সেমি", "১০০ সেমি", "১০০০ সেমি", "০.১ সেমি"],
+                answer: "১০০ সেমি"
+            },
+            {
+                category: "পাটিগণিত",
+                question: "একটি ট্রেনের গতি ৬০ কিমি/ঘণ্টা হলে, এটি ২ ঘণ্টায় কত দূরত্ব অতিক্রম করবে?",
+                options: ["৩০ কিমি", "৬০ কিমি", "১০০ কিমি", "১২০ কিমি"],
+                answer: "১২০ কিমি"
+            },
+            {
+                category: "পাটিগণিত",
+                question: "৪ এর কিউব কত?",
+                options: ["১৬", "২৪", "৬৪", "১২৮"],
+                answer: "৬৪"
+            },
+            {
+                category: "পাটিগণিত",
+                question: "যদি একটি বৃত্তের ব্যাসার্ধ ৭ সেমি হয়, তাহলে তার পরিধি কত?",
+                options: ["১৪ সেমি", "২১ সেমি", "২২ সেমি", "৪৪ সেমি"],
+                answer: "৪৪ সেমি"
+            },
+            {
+                category: "পাটিগণিত",
+                question: "৫০ এর দ্বিগুণ কত?",
+                options: ["২৫", "৭৫", "১০০", "১৫০"],
+                answer: "১০০"
+            },
+            {
+                category: "পাটিগণিত",
+                question: "একটি আয়তক্ষেত্রের দৈর্ঘ্য ৮ সেমি এবং প্রস্থ ৫ সেমি হলে, তার ক্ষেত্রফল কত?",
+                options: ["১৩ বর্গ সেমি", "৪০ বর্গ সেমি", "৪৫ বর্গ সেমি", "৫০ বর্গ সেমি"],
+                answer: "৪০ বর্গ সেমি"
+            },
+            {
+                category: "পাটিগণিত",
+                question: "১ থেকে ১০ পর্যন্ত স্বাভাবিক সংখ্যার যোগফল কত?",
+                options: ["৪৫", "৫০", "৫৫", "৬০"],
+                answer: "৫৫"
+            },
+            // Current Affairs (সাম্প্রতিক ঘটনা) - 15 questions
+            {
+                category: "সাম্প্রতিক ঘটনা",
+                question: "২০২৩ সালের ক্রিকেট বিশ্বকাপ ফাইনাল কোন স্টেডিয়ামে অনুষ্ঠিত হয়েছিল?",
+                options: ["লর্ডস ক্রিকেট গ্রাউন্ড", "মেলবোর্ন ক্রিকেট গ্রাউন্ড", "নরেন্দ্র মোদি স্টেডিয়াম", "ইডেন গার্ডেনস"],
+                answer: "নরেন্দ্র মোদি স্টেডিয়াম"
+            },
+            {
+                category: "সাম্প্রতিক ঘটনা",
+                question: "ভারতের চন্দ্রযান-৩ কোন তারিখে চাঁদের দক্ষিণ মেরুতে অবতরণ করে?",
+                options: ["২৩শে আগস্ট, ২০২৩", "১৪ই জুলাই, ২০২৩", "১৫ই আগস্ট, ২০২৩", "১লা সেপ্টেম্বর, ২০২৩"],
+                answer: "২৩শে আগস্ট, ২০২৩"
+            },
+            {
+                category: "সাম্প্রতিক ঘটনা",
+                question: "২০২৪ সালের গ্রীষ্মকালীন অলিম্পিক কোথায় অনুষ্ঠিত হবে?",
+                options: ["লস অ্যাঞ্জেলেস", "টোকিও", "প্যারিস", "রোম"],
+                answer: "প্যারিস"
+            },
+            {
+                category: "সাম্প্রতিক ঘটনা",
+                question: "ভারতের বর্তমান রাষ্ট্রপতি কে?",
+                options: ["রাম নাথ কোবিন্দ", "প্রণব মুখার্জি", "দ্রৌপদী মুর্মু", "ভেঙ্কাইয়া নাইডু"],
+                answer: "দ্রৌপদী মুর্মু"
+            },
+            {
+                category: "সাম্প্রতিক ঘটনা",
+                question: "ভারতের বর্তমান প্রধানমন্ত্রী কে?",
+                options: ["অমিত শাহ", "রাজনাথ সিং", "নরেন্দ্র মোদি", "মনমোহন সিং"],
+                answer: "নরেন্দ্র মোদি"
+            },
+            {
+                category: "সাম্প্রতিক ঘটনা",
+                question: "২০২২ সালের ফিফা বিশ্বকাপ কোন দেশ জিতেছিল?",
+                options: ["ফ্রান্স", "আর্জেন্টিনা", "ব্রাজিল", "জার্মানি"],
+                answer: "আর্জেন্টিনা"
+            },
+            {
+                category: "সাম্প্রতিক ঘটনা",
+                question: "২০২৩ সালের নোবেল শান্তি পুরস্কার কে পেয়েছেন?",
+                options: ["নার্গিস মোহম্মদি", "আলেস বিয়ালিয়াতস্কি", "অভিজিৎ ব্যানার্জি", "মারিয়া রেসা"],
+                answer: "নার্গিস মোহম্মদি"
+            },
+            {
+                category: "সাম্প্রতিক ঘটনা",
+                question: "ভারতের নতুন সংসদ ভবন কোন বছরে উদ্বোধন করা হয়?",
+                options: ["২০২২", "২০২৩", "২০২৪", "২০২১"],
+                answer: "২০২৩"
+            },
+            {
+                category: "সাম্প্রতিক ঘটনা",
+                question: "সৌরজগতের নতুন গ্রহ হিসেবে কোনটিকে ধরা হয়?",
+                options: ["প্লুটো", "নেপচুন", "প্লুটোকে গ্রহ হিসেবে ধরা হয় না", "সেরেস"],
+                answer: "প্লুটোকে গ্রহ হিসেবে ধরা হয় না"
+            },
+            {
+                category: "সাম্প্রতিক ঘটনা",
+                question: "G20-এর ২০২৪ সালের সম্মেলন কোন দেশে অনুষ্ঠিত হবে?",
+                options: ["ভারত", "ইন্দোনেশিয়া", "ব্রাজিল", "দক্ষিণ আফ্রিকা"],
+                answer: "ব্রাজিল"
+            },
+            {
+                category: "সাম্প্রতিক ঘটনা",
+                question: "ভারতীয় রিজার্ভ ব্যাঙ্কের বর্তমান গভর্নর কে?",
+                options: ["উর্জিৎ প্যাটেল", "রঘুরাম রাজন", "শক্তি কান্ত দাস", "নির্মলা সীতারামন"],
+                answer: "শক্তি কান্ত দাস"
+            },
+            {
+                category: "সাম্প্রতিক ঘটনা",
+                question: "২০২৩ সালের এশিয়া কাপ ক্রিকেট টুর্নামেন্টের বিজয়ী দল কোনটি?",
+                options: ["পাকিস্তান", "বাংলাদেশ", "শ্রীলঙ্কা", "ভারত"],
+                answer: "ভারত"
+            },
+            {
+                category: "সাম্প্রতিক ঘটনা",
+                question: "২০২৪ সালের টেনিসের উইম্বলডন চ্যাম্পিয়ন কে?",
+                options: ["কার্লোস আলকারাজ", "নোভাক জোকোভিচ", "রজার ফেদেরার", "রাফায়েল নাদাল"],
+                answer: "কার্লোস আলকারাজ"
+            },
+            {
+                category: "সাম্প্রতিক ঘটনা",
+                question: "কোন দেশের বিজ্ঞানীরা প্রথম সফলভাবে মানব হৃদপিণ্ড প্রতিস্থাপন করেছেন?",
+                options: ["চীন", "রাশিয়া", "মার্কিন যুক্তরাষ্ট্র", "জাপান"],
+                answer: "মার্কিন যুক্তরাষ্ট্র"
+            },
+            {
+                category: "সাম্প্রতিক ঘটনা",
+                question: "ভারতের কোন শহরে প্রথম বুলেট ট্রেন চলবে?",
+                options: ["কলকাতা", "দিল্লি", "মুম্বাই", "চেন্নাই"],
+                answer: "মুম্বাই"
+            },
+            // General English (সাধারণ ইংরেজি) - 15 questions
+            {
+                category: "সাধারণ ইংরেজি",
+                question: "Choose the correct synonym of 'diligent'.",
+                options: ["Lazy", "Industrious", "Weak", "Clumsy"],
+                answer: "Industrious"
+            },
+            {
+                category: "সাধারণ ইংরেজি",
+                question: "Find the antonym of 'ancient'.",
+                options: ["Old", "Modern", "Classic", "Historic"],
+                answer: "Modern"
+            },
+            {
+                category: "সাধারণ ইংরেজি",
+                question: "Fill in the blank: The sun ________ in the east.",
+                options: ["rise", "is rising", "rises", "has risen"],
+                answer: "rises"
+            },
+            {
+                category: "সাধারণ ইংরেজি",
+                question: "What is the past tense of 'sing'?",
+                options: ["sanged", "song", "sung", "sang"],
+                answer: "sang"
+            },
+            {
+                category: "সাধারণ ইংরেজি",
+                question: "Choose the correct preposition: He is good ________ maths.",
+                options: ["in", "at", "on", "for"],
+                answer: "at"
+            },
+            {
+                category: "সাধারণ ইংরেজি",
+                question: "Choose the correct article: ________ elephant is a big animal.",
+                options: ["A", "An", "The", "No article"],
+                answer: "An"
+            },
+            {
+                category: "সাধারণ ইংরেজি",
+                question: "What is the plural of 'child'?",
+                options: ["childs", "childes", "children", "childen"],
+                answer: "children"
+            },
+            {
+                category: "সাধারণ ইংরেজি",
+                question: "Complete the sentence: He came ________ car.",
+                options: ["in", "by", "on", "with"],
+                answer: "by"
+            },
+            {
+                category: "সাধারণ ইংরেজি",
+                question: "Which of the following is a collective noun for a group of lions?",
+                options: ["Flock", "Herd", "Pride", "School"],
+                answer: "Pride"
+            },
+            {
+                category: "সাধারণ ইংরেজি",
+                question: "Identify the adjective in the sentence: 'The red car is fast.'",
+                options: ["The", "car", "is", "red"],
+                answer: "red"
+            },
+            {
+                category: "সাধারণ ইংরেজি",
+                question: "Choose the correct spelling:",
+                options: ["Recieve", "Recieve", "Receive", "Recieve"],
+                answer: "Receive"
+            },
+            {
+                category: "সাধারণ ইংরেজি",
+                question: "What is the superlative degree of 'good'?",
+                options: ["gooder", "best", "more good", "well"],
+                answer: "best"
+            },
+            {
+                category: "সাধারণ ইংরেজি",
+                question: "Fill in the blank: I will call you ________ I get home.",
+                options: ["until", "when", "after", "before"],
+                answer: "when"
+            },
+            {
+                category: "সাধারণ ইংরেজি",
+                question: "Choose the correct phrasal verb: He gave ________ his bad habits.",
+                options: ["in", "up", "away", "on"],
+                answer: "up"
+            },
+            {
+                category: "সাধারণ ইংরেজি",
+                question: "What is the synonym of 'happy'?",
+                options: ["Sad", "Joyful", "Angry", "Tired"],
+                answer: "Joyful"
+            }
+        ];
+
+        const TOTAL_QUESTIONS = 60; // Total number of questions as per user request (15 * 4)
+        const DURATION_MINUTES = 60; // Total duration in minutes as per user request
+
+        // --- DOM Elements ---
+        const loginSection = document.getElementById('login-section');
+        const testSection = document.getElementById('test-section');
+        const resultsSection = document.getElementById('results-section');
+        const loginForm = document.getElementById('login-form');
+        const quizContainer = document.getElementById('quiz-container');
+        const submitButton = document.getElementById('submit-button');
+        const retakeButton = document.getElementById('retake-button');
+        const userInfo = document.getElementById('user-info');
+        const finalName = document.getElementById('final-name');
+        const scoreElement = document.getElementById('score');
+        const totalQuestionsElement = document.getElementById('total-questions');
+        const congratulationsMessage = document.getElementById('congratulations');
+        const tryAgainMessage = document.getElementById('try-again');
+        const messageBox = document.getElementById('message-box');
+        const messageText = document.getElementById('message-text');
+        const timerDisplay = document.getElementById('timer');
+
+        let userName = '';
+        let userMobile = '';
+        let timerInterval;
 
         // --- Utility Functions ---
-
-        /**
-         * Displays a temporary message in the message box.
-         * @param {string} message The message to display.
-         * @param {number} duration The duration in milliseconds to show the message.
-         */
-        function showMessage(message, duration = 3000) {
-            const messageBox = document.getElementById("message-box");
-            const messageText = document.getElementById("message-text");
+        function showMessage(message, type = 'error') {
             messageText.textContent = message;
-            messageBox.classList.remove("hidden");
+            messageBox.className = `message-box p-4 rounded-lg shadow-lg show ${type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`;
             setTimeout(() => {
-                messageBox.classList.add("hidden");
-            }, duration);
+                messageBox.classList.remove('show');
+            }, 3000);
         }
 
-        /**
-         * Renders a single quiz question from the hardcoded quizData object.
-         * @param {number} index The index of the question to render.
-         */
-        function renderQuestion(index) {
-            if (index < 0 || index >= quizData.questions.length) {
-                console.error("Invalid question index.");
-                return;
-            }
-
-            const quizContainer = document.getElementById("quiz-container");
-            const questionCounterElement = document.getElementById("question-counter");
-            const nextButton = document.getElementById("next-button");
-
-            const q = quizData.questions[index];
-            quizContainer.innerHTML = '';
-            
-            const questionElement = document.createElement('div');
-            questionElement.classList.add('p-6', 'bg-gray-50', 'rounded-lg', 'shadow');
-            
-            const questionHtml = `
-                <p class="text-xl font-semibold text-gray-800 mb-4">
-                    <span class="font-bold text-blue-600">Q${index + 1}:</span> 
-                    ${q.question}
-                </p>
-                <div class="space-y-3">
-                    ${q.options.map((option, optionIndex) => `
-                        <label class="block">
-                            <input type="radio" name="current-question" value="${optionIndex}" class="hidden" ${studentAnswers[index] === optionIndex ? 'checked' : ''} />
-                            <span class="option-label text-lg font-medium text-gray-700 block transition-all duration-200 ease-in-out">
-                                ${option}
-                            </span>
-                        </label>
-                    `).join('')}
-                </div>
-            `;
-            questionElement.innerHTML = questionHtml;
-            quizContainer.appendChild(questionElement);
-
-            questionCounterElement.textContent = `Question ${index + 1} of ${quizData.questions.length}`;
-
-            if (index === quizData.questions.length - 1) {
-                nextButton.textContent = "Submit Quiz";
-            } else {
-                nextButton.textContent = "Next Question";
-            }
-
-            if (window.MathJax) {
-                window.MathJax.typesetPromise([quizContainer]);
-            }
-        }
-
-        /**
-         * Starts the quiz timer.
-         */
         function startTimer() {
-            const timerElement = document.getElementById("timer");
-            countdownInterval = setInterval(() => {
-                const minutes = Math.floor(timer / 60);
-                const seconds = timer % 60;
-                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (timer > 0) {
-                    timer--;
-                } else {
-                    clearInterval(countdownInterval);
-                    submitQuiz();
+            let totalSeconds = DURATION_MINUTES * 60;
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                if (totalSeconds < 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "সময় শেষ!";
+                    submitTest();
+                    return;
                 }
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                timerDisplay.textContent = `সময় বাকি: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             }, 1000);
         }
 
-        /**
-         * Saves the current question's answer and moves to the next question.
-         */
-        function nextQuestion() {
-            const selectedOption = document.querySelector('input[name="current-question"]:checked');
-            if (selectedOption) {
-                const selectedIndex = parseInt(selectedOption.value, 10);
-                studentAnswers[currentQuestionIndex] = selectedIndex;
-            }
-
-            currentQuestionIndex++;
-            if (currentQuestionIndex < quizData.questions.length) {
-                renderQuestion(currentQuestionIndex);
-            } else {
-                submitQuiz();
-            }
-        }
-
-        /**
-         * Calculates the final score and displays the results.
-         */
-        function submitQuiz() {
-            clearInterval(countdownInterval);
-            let score = 0;
-            quizData.questions.forEach((q, index) => {
-                if (studentAnswers[index] === q.correctAnswer) {
-                    score += q.points;
+        function renderQuestions() {
+            quizContainer.innerHTML = ''; // Clear previous questions
+            let currentCategory = '';
+            questions.forEach((q, index) => {
+                if (q.category !== currentCategory) {
+                    currentCategory = q.category;
+                    const categoryHeader = document.createElement('h3');
+                    categoryHeader.classList.add('font-bold', 'text-gray-800', 'text-xl', 'mt-8', 'mb-4', 'border-b-2', 'border-blue-500', 'pb-2');
+                    categoryHeader.textContent = currentCategory;
+                    quizContainer.appendChild(categoryHeader);
                 }
-            });
-
-            finalScore = score;
-            timeTaken = quizData.duration * 60 - timer;
-
-            const finalStudentNameElement = document.getElementById("final-student-name");
-            const finalMobileNumberElement = document.getElementById("final-mobile-number");
-            const finalScoreElement = document.getElementById("final-score");
-            const timeTakenElement = document.getElementById("time-taken");
-            const quizSection = document.getElementById("quiz-section");
-            const resultsSection = document.getElementById("results-section");
-
-            finalStudentNameElement.textContent = studentName;
-            finalMobileNumberElement.textContent = mobileNumber;
-            finalScoreElement.textContent = `${finalScore} / ${totalPossibleScore}`;
-
-            const minutesTaken = Math.floor(timeTaken / 60);
-            const secondsTaken = timeTaken % 60;
-            timeTakenElement.textContent = `Time taken: ${minutesTaken} min ${secondsTaken} sec`;
-
-            quizSection.classList.add("hidden");
-            resultsSection.classList.remove("hidden");
-        }
-
-        /**
-         * Generates and downloads a PDF scorecard using jsPDF's html method.
-         */
-        function generateAndDownloadPDF() {
-            window.jsPDF = window.jspdf.jsPDF;
-            const pdf = new jsPDF('p', 'pt', 'a4'); // Use 'pt' unit for better control
-
-            // Create the HTML content with inline styles
-            const pdfContentHTML = `
-                <div style="font-family: 'Inter', sans-serif; padding: 40px; text-align: center; width: 100%;">
-                    <h1 style="font-size: 32px; font-weight: 800; color: white; background-image: linear-gradient(to right, #4c1d95, #3b0764); padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 24px;">
-                        WBSLST 2025 Mock Test Portal
-                    </h1>
-                    <div style="background-color: #4c1d95; padding: 24px; border: 2px solid #5a2e9e; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);">
-                        <h2 style="font-size: 28px; font-weight: 700; color: white; margin-bottom: 16px; text-align: center;">Scorecard</h2>
-                        <div style="display: flex; flex-direction: column; gap: 16px; text-align: left;">
-                            <p style="font-size: 18px; font-weight: 500; color: white;">Name: <span style="font-weight: 700;">${studentName}</span></p>
-                            <p style="font-size: 18px; font-weight: 500; color: white;">Mobile Number: <span style="font-weight: 700;">${mobileNumber}</span></p>
-                            <p style="font-size: 24px; font-weight: 600; color: white;">Total Score: <span style="font-weight: 800; color: rgb(250, 204, 21);">${finalScore} / ${totalPossibleScore}</span></p>
-                        </div>
-                    </div>
-                    <div style="margin-top: 32px; text-align: center; color: #6b7280; font-style: italic;">
-                        <p style="font-size: 16px;">Best wishes for your future endeavors!</p>
-                    </div>
-                </div>
-            `;
-            
-            pdf.html(pdfContentHTML, {
-                callback: function (pdf) {
-                    pdf.save(`WBSLST_Scorecard_${studentName}.pdf`);
-                },
-                x: 10,
-                y: 10,
-                width: 570, // Set the width to a reasonable value for A4
-                windowWidth: 700 // Set the virtual window width for rendering
-            });
-        }
-
-        /**
-         * Resets the quiz and returns to the main dashboard.
-         */
-        function resetQuizAndReturn() {
-            const mainDashboardSection = document.getElementById("main-dashboard-section");
-            const quizFlowContainer = document.getElementById("quiz-flow-container");
-            const quizContainer = document.getElementById("quiz-container");
-            const studentForm = document.getElementById("student-form");
-            const resultsSection = document.getElementById("results-section");
-            const quizSection = document.getElementById("quiz-section");
-            const studentFormSection = document.getElementById("student-form-section");
-
-            clearInterval(countdownInterval);
-            timer = quizData.duration * 60;
-            quizContainer.innerHTML = '';
-            studentForm.reset();
-            currentQuestionIndex = 0;
-            studentAnswers = new Array(quizData.questions.length).fill(null);
-
-            quizFlowContainer.classList.add("hidden");
-            mainDashboardSection.classList.remove("hidden");
-
-            resultsSection.classList.add("hidden");
-            quizSection.classList.add("hidden");
-            studentFormSection.classList.remove("hidden");
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- DOM Elements ---
-            const mainDashboardSection = document.getElementById("main-dashboard-section");
-            const quizFlowContainer = document.getElementById("quiz-flow-container");
-            const studentFormSection = document.getElementById("student-form-section");
-            const studentForm = document.getElementById("student-form");
-            const quizSection = document.getElementById("quiz-section");
-            const nextButton = document.getElementById("next-button");
-            const restartButton = document.getElementById("restart-button");
-            const startTestButton = document.getElementById('start-test-button');
-            const backToHomeButton = document.getElementById("back-to-home");
-            const downloadPdfButton = document.getElementById("download-pdf-button");
-
-            // --- Event Listeners ---
-
-            // Handle click on the main "Start Free Mock Test" button
-            // Check if the button element exists before adding the listener
-            if (startTestButton) {
-                console.log("Start Test button found. Attaching event listener.");
-                startTestButton.addEventListener('click', () => {
-                    console.log("Start Test button clicked.");
-                    mainDashboardSection.classList.add("hidden");
-                    quizFlowContainer.classList.remove("hidden");
-                });
-            } else {
-                console.error("Start Test button not found in the DOM.");
-            }
-
-            // Handle student form submission (inside the quiz flow)
-            studentForm.addEventListener("submit", (e) => {
-                e.preventDefault();
-                studentName = document.getElementById("studentName").value.trim();
-                mobileNumber = document.getElementById("mobileNumber").value.trim();
-
-                if (studentName && mobileNumber.length === 10 && !isNaN(mobileNumber)) {
-                    studentFormSection.classList.add("hidden");
-                    quizSection.classList.remove("hidden");
-
-                    currentQuestionIndex = 0;
-                    studentAnswers = new Array(quizData.questions.length).fill(null);
-                    renderQuestion(currentQuestionIndex);
-                    startTimer();
-                } else {
-                    showMessage("Please enter your name and a valid 10-digit mobile number to start the quiz.");
-                }
-            });
-
-            // Handle next/submit button click
-            nextButton.addEventListener("click", () => {
-                nextQuestion();
-            });
-
-            // Handle the "Try Again" button on the results screen
-            restartButton.addEventListener("click", () => {
-                timer = quizData.duration * 60;
-                currentQuestionIndex = 0;
-                studentAnswers = new Array(quizData.questions.length).fill(null);
                 
-                document.getElementById("results-section").classList.add("hidden");
-                document.getElementById("student-form-section").classList.remove("hidden");
+                const questionElement = document.createElement('div');
+                questionElement.classList.add('bg-white', 'p-6', 'rounded-lg', 'shadow', 'border', 'border-gray-200');
+                
+                const questionTitle = document.createElement('h4');
+                questionTitle.classList.add('font-semibold', 'text-gray-700', 'text-lg', 'mb-4');
+                questionTitle.textContent = `${index + 1}. ${q.question}`;
+                questionElement.appendChild(questionTitle);
+                
+                const optionsContainer = document.createElement('div');
+                optionsContainer.classList.add('space-y-2');
+                q.options.forEach(option => {
+                    const optionLabel = document.createElement('label');
+                    optionLabel.classList.add('block', 'bg-gray-50', 'p-3', 'rounded-lg', 'cursor-pointer', 'hover:bg-gray-200', 'transition', 'duration-200');
+                    
+                    const inputRadio = document.createElement('input');
+                    inputRadio.type = 'radio';
+                    inputRadio.name = `question-${index}`;
+                    inputRadio.value = option;
+                    inputRadio.classList.add('mr-2');
+                    
+                    optionLabel.appendChild(inputRadio);
+                    optionLabel.appendChild(document.createTextNode(option));
+                    optionsContainer.appendChild(optionLabel);
+                });
+                
+                questionElement.appendChild(optionsContainer);
+                quizContainer.appendChild(questionElement);
             });
+        }
 
-            // Handle the "Download Scorecard" button
-            downloadPdfButton.addEventListener("click", () => {
-                generateAndDownloadPDF();
+        function calculateScore() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question-${index}"]:checked`);
+                if (selectedOption && selectedOption.value === q.answer) {
+                    score++;
+                }
             });
+            return score;
+        }
 
-            // Handle the "Back" button to return to the dashboard
-            backToHomeButton.addEventListener("click", () => {
-                resetQuizAndReturn();
-            });
+        function showResults(score) {
+            loginSection.classList.add('hidden');
+            testSection.classList.add('hidden');
+            resultsSection.classList.remove('hidden');
+            
+            finalName.textContent = userName;
+            scoreElement.textContent = score;
+            totalQuestionsElement.textContent = TOTAL_QUESTIONS;
+
+            if (score >= TOTAL_QUESTIONS * 0.5) {
+                congratulationsMessage.classList.remove('hidden');
+                tryAgainMessage.classList.add('hidden');
+            } else {
+                congratulationsMessage.classList.add('hidden');
+                tryAgainMessage.classList.remove('hidden');
+            }
+        }
+
+        function submitTest() {
+            clearInterval(timerInterval);
+            const score = calculateScore();
+            showResults(score);
+        }
+
+        // --- Event Listeners ---
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nameInput = document.getElementById('name');
+            const mobileInput = document.getElementById('mobile');
+            userName = nameInput.value.trim();
+            userMobile = mobileInput.value.trim();
+
+            if (userName === '' || userMobile === '') {
+                showMessage('অনুগ্রহ করে আপনার নাম এবং মোবাইল নম্বর উভয়ই লিখুন।');
+                return;
+            }
+
+            if (!/^\d{10}$/.test(userMobile)) {
+                showMessage('অনুগ্রহ করে একটি বৈধ ১০-সংখ্যার মোবাইল নম্বর লিখুন।');
+                return;
+            }
+
+            loginSection.classList.add('hidden');
+            testSection.classList.remove('hidden');
+            userInfo.textContent = `স্বাগতম, ${userName}! আপনার জন্য শুভকামনা। পরীক্ষার সময়: ৬০ মিনিট।`;
+            renderQuestions();
+            startTimer();
         });
+
+        submitButton.addEventListener('click', () => {
+            let allAnswered = true;
+            questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question-${index}"]:checked`);
+                if (!selectedOption) {
+                    allAnswered = false;
+                }
+            });
+
+            if (!allAnswered) {
+                showMessage('জমা দেওয়ার আগে অনুগ্রহ করে সমস্ত প্রশ্নের উত্তর দিন।');
+                return;
+            }
+
+            submitTest();
+        });
+
+        retakeButton.addEventListener('click', () => {
+            resultsSection.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+            loginForm.reset();
+        });
+
     </script>
 </body>
 </html>
